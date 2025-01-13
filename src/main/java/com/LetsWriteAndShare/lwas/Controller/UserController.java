@@ -17,33 +17,37 @@ import java.util.Map;
 public class UserController {
 
 
-   // @CrossOrigin eğer frontendte proxt ayarlamazsak bunu kullanabiliriz
+    // @CrossOrigin eğer frontendte proxt ayarlamazsak bunu kullanabiliriz
 
 
-    private final  UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/api/v1/users")
-        ResponseEntity<?>  createUser(@RequestBody User user) {
-    if (user.getUsername() == null || user.getUsername().isEmpty()){
+    ResponseEntity<?> createUser(@RequestBody User user) {
         ApiErrors apiErrors = new ApiErrors();
         apiErrors.setMessage("Validation Errors");
         apiErrors.setPath("/api/v1/users");
         apiErrors.setStatus(400);
-        Map<String,String> validationErrors = new HashMap<>();
-        validationErrors.put("username", "username can not be null");
-        apiErrors.setValidationErrors(validationErrors);
+        Map<String, String> validationErrors = new HashMap<>();
+        if (user.getUsername() == null || user.getUsername().isEmpty()) {
 
+            validationErrors.put("username", "username can not be null");
+        }
+        if (user.getEmail() == null || user.getEmail().isEmpty()) {
 
-
-        return ResponseEntity.badRequest().body(apiErrors);
+            validationErrors.put("email", "E-mail can not be null");
+        }
+        if (validationErrors.size() > 0) {
+            apiErrors.setValidationErrors(validationErrors);
+            return ResponseEntity.badRequest().body(apiErrors);
         }
 
         userService.save(user);
-        return ResponseEntity.ok( new GenericMessage("user is created!!"));
+        return ResponseEntity.ok(new GenericMessage("user is created!!"));
     }
 
 
