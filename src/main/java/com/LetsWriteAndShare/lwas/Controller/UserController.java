@@ -50,7 +50,7 @@ public class UserController {
               //  validationErrors.put(fieldError.getField(),fieldError.getDefaultMessage()); }
 
             var validationErrors = exception.getBindingResult().getFieldErrors().stream().collect(Collectors.toMap(
-                    FieldError::getField, FieldError::getDefaultMessage ));
+                    FieldError::getField, FieldError::getDefaultMessage, (existing, replacing) -> existing ));
             apiErrors.setValidationErrors(validationErrors);
             return ResponseEntity.badRequest().body(apiErrors);
 
