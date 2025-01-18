@@ -25,7 +25,7 @@ public class User {
     String email;
 
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
-    @Size(min = 8, max = 255)
+    @Size(min = 3, max = 255)
     String password;
 
     public Long getId() {
