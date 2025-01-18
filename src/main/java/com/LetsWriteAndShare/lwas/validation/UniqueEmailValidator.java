@@ -1,6 +1,7 @@
 package com.LetsWriteAndShare.lwas.validation;
 
 import com.LetsWriteAndShare.lwas.Repository.UserRepository;
+import com.LetsWriteAndShare.lwas.entity.User;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
@@ -15,6 +16,11 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return false;
+
+        User inDB = userRepository.findByEmail(value);
+        if (inDB != null){
+            return  false;
+        }
+        return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.LetsWriteAndShare.lwas.entity;
 
 
+import com.LetsWriteAndShare.lwas.validation.UniqueEmail;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,13 +17,14 @@ public class User {
     @GeneratedValue
     Long id;
     @NotBlank
-            @Size(min = 4, max = 255)
+    @Size(min = 4, max = 255)
     String username;
     @NotBlank
-            @Email
+    @Email
+    @UniqueEmail
     String email;
 
-    @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
     @Size(min = 8, max = 255)
     String password;
 
