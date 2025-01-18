@@ -1,6 +1,7 @@
 package com.LetsWriteAndShare.lwas.Controller;
 
 
+import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.entity.User;
 import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.UserService;
@@ -37,25 +38,38 @@ public class UserController {
     }
 
 
-        @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
         //@ResponseStatus(HttpStatus.BAD_REQUEST)
         //ResponseEntity yerine böyle de kullanabilirdim.
-        ResponseEntity<ApiErrors> handleMethodArgNotValidEx(MethodArgumentNotValidException exception){
-            ApiErrors apiErrors = new ApiErrors();
-            apiErrors.setMessage("Validation Errors");
-            apiErrors.setPath("/api/v1/users");
-            apiErrors.setStatus(400);
-           // Map<String, String> validationErrors = new HashMap<>();
-            //for( var fieldError : exception.getBindingResult().getFieldErrors()){
-              //  validationErrors.put(fieldError.getField(),fieldError.getDefaultMessage()); }
+    ResponseEntity<ApiErrors> handleMethodArgNotValidEx(MethodArgumentNotValidException exception) {
+        ApiErrors apiErrors = new ApiErrors();
+        apiErrors.setMessage("Validation Errors");
+        apiErrors.setPath("/api/v1/users");
+        apiErrors.setStatus(400);
+        // Map<String, String> validationErrors = new HashMap<>();
+        //for( var fieldError : exception.getBindingResult().getFieldErrors()){
+        //  validationErrors.put(fieldError.getField(),fieldError.getDefaultMessage()); }
 
-            var validationErrors = exception.getBindingResult().getFieldErrors().stream().collect(Collectors.toMap(
-                    FieldError::getField, FieldError::getDefaultMessage, (existing, replacing) -> existing ));
-            apiErrors.setValidationErrors(validationErrors);
-            return ResponseEntity.badRequest().body(apiErrors);
-
-
+        var validationErrors = exception.getBindingResult().getFieldErrors().stream().collect(Collectors.toMap(
+                FieldError::getField, FieldError::getDefaultMessage, (existing, replacing) -> existing));
+        apiErrors.setValidationErrors(validationErrors);
+        return ResponseEntity.badRequest().body(apiErrors);
 
 
-        }
+    }
+    @ExceptionHandler(NotUniqueEmailException.class)
+
+    ResponseEntity<ApiErrors> handleNotUniqueEmailEx(NotUniqueEmailException exception) {
+        ApiErrors apiErrors = new ApiErrors();
+        apiErrors.setMessage("Validation Errors");
+        apiErrors.setPath("/api/v1/users");
+        apiErrors.setStatus(400);
+
+        Map<String, String> validationErrors = new HashMap<>();
+        validationErrors.put("email","E-mail in use");
+        apiErrors.setValidationErrors(validationErrors);
+        return ResponseEntity.badRequest().body(apiErrors);
+
+
+    }
 }
