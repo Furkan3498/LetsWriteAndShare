@@ -23,7 +23,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface UniqueEmail {
 
 
-    String message() default "E-mail in use";
+    String message() default "{LetsWriteAndShare.constraint.email.notunique}";
 
     Class<?>[] groups() default { };
 
