@@ -6,6 +6,7 @@ import com.LetsWriteAndShare.lwas.entity.User;
 import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.UserService;
 import com.LetsWriteAndShare.lwas.utils.GenericMessage;
+import com.LetsWriteAndShare.lwas.utils.Messages;
 import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -27,19 +28,17 @@ public class UserController {
 
 
     private final UserService userService;
-    MessageSource messageSource;
 
-    public UserController(UserService userService, MessageSource messageSource) {
+
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.messageSource = messageSource;
     }
-
 
     @PostMapping("/api/v1/users")
     GenericMessage createUser(@Valid @RequestBody User user) {
 
         userService.save(user);
-        String message = messageSource.getMessage("LetsWriteAndShare.create.user.success.message",null, LocaleContextHolder.getLocale());
+        String message = Messages.getMessageForLocale("LetsWriteAndShare.create.user.success.message", LocaleContextHolder.getLocale());
 
         return new GenericMessage(message);
     }
@@ -51,7 +50,7 @@ public class UserController {
     ResponseEntity<ApiErrors> handleMethodArgNotValidEx(MethodArgumentNotValidException exception) {
         ApiErrors apiErrors = new ApiErrors();
         apiErrors.setPath("/api/v1/users");
-        String message = messageSource.getMessage("LetsWriteAndShare.error.validation",null, LocaleContextHolder.getLocale());
+        String message = Messages.getMessageForLocale("LetsWriteAndShare.error.validation",  LocaleContextHolder.getLocale());
 
         apiErrors.setMessage(message);
 
@@ -73,13 +72,11 @@ public class UserController {
         ApiErrors apiErrors = new ApiErrors();
 
         apiErrors.setPath("/api/v1/users");
-        String message = messageSource.getMessage("LetsWriteAndShare.error.validation",null, LocaleContextHolder.getLocale());
-        apiErrors.setMessage(message);
+
+        apiErrors.setMessage(exception.getMessage());
         apiErrors.setStatus(400);
-        String validationError = messageSource.getMessage("LetsWriteAndShare.constraint.email.notunique",null, LocaleContextHolder.getLocale());
-        Map<String, String> validationErrors = new HashMap<>();
-        validationErrors.put("email",validationError);
-        apiErrors.setValidationErrors(validationErrors);
+
+        apiErrors.setValidationErrors(exception.getValidErrors());
         return ResponseEntity.badRequest().body(apiErrors);
 
 

@@ -16,16 +16,16 @@ public class User {
     @Id
     @GeneratedValue
     Long id;
- @NotBlank(message = "{LetsWriteAndShare.constraint.username.notblank}")
-    @Size(min = 4, max = 255 , message = "{LetsWriteAndShare.constraint.username.size}")
+    @NotBlank(message = "{LetsWriteAndShare.constraint.username.notblank}")
+    @Size(min = 4, max = 255, message = "{LetsWriteAndShare.constraint.username.size}")
     String username;
     @NotBlank
     @Email
-    //@UniqueEmail
+    @UniqueEmail
     String email;
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$" , message = "{LetsWriteAndShare.constraint.password.pattern}")
-    @Size(min = 3, max = 255)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{LetsWriteAndShare.constraint.password.pattern}")
+    @Size(min = 3, max = 255 ,message = "{LetsWriteAndShare.constraint.password.size}")
     String password;
 
     public Long getId() {
