@@ -7,6 +7,8 @@ import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.UserService;
 import com.LetsWriteAndShare.lwas.utils.GenericMessage;
 import jakarta.validation.Valid;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -25,16 +27,21 @@ public class UserController {
 
 
     private final UserService userService;
+    MessageSource messageSource;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, MessageSource messageSource) {
         this.userService = userService;
+        this.messageSource = messageSource;
     }
+
 
     @PostMapping("/api/v1/users")
     GenericMessage createUser(@Valid @RequestBody User user) {
 
         userService.save(user);
-        return new GenericMessage("user is created!!");
+        String message = messageSource.getMessage("LetsWriteAndShare.create.user.success.message",null, LocaleContextHolder.getLocale());
+
+        return new GenericMessage(message);
     }
 
 
@@ -43,8 +50,11 @@ public class UserController {
         //ResponseEntity yerine böyle de kullanabilirdim.
     ResponseEntity<ApiErrors> handleMethodArgNotValidEx(MethodArgumentNotValidException exception) {
         ApiErrors apiErrors = new ApiErrors();
-        apiErrors.setMessage("Validation Errors");
         apiErrors.setPath("/api/v1/users");
+        String message = messageSource.getMessage("LetsWriteAndShare.error.validation",null, LocaleContextHolder.getLocale());
+
+        apiErrors.setMessage(message);
+
         apiErrors.setStatus(400);
         // Map<String, String> validationErrors = new HashMap<>();
         //for( var fieldError : exception.getBindingResult().getFieldErrors()){
@@ -61,12 +71,14 @@ public class UserController {
 
     ResponseEntity<ApiErrors> handleNotUniqueEmailEx(NotUniqueEmailException exception) {
         ApiErrors apiErrors = new ApiErrors();
-        apiErrors.setMessage("Validation Errors");
-        apiErrors.setPath("/api/v1/users");
-        apiErrors.setStatus(400);
 
+        apiErrors.setPath("/api/v1/users");
+        String message = messageSource.getMessage("LetsWriteAndShare.error.validation",null, LocaleContextHolder.getLocale());
+        apiErrors.setMessage(message);
+        apiErrors.setStatus(400);
+        String validationError = messageSource.getMessage("LetsWriteAndShare.constraint.email.notunique",null, LocaleContextHolder.getLocale());
         Map<String, String> validationErrors = new HashMap<>();
-        validationErrors.put("email","E-mail in use");
+        validationErrors.put("email",validationError);
         apiErrors.setValidationErrors(validationErrors);
         return ResponseEntity.badRequest().body(apiErrors);
 

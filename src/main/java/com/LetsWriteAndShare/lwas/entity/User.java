@@ -17,11 +17,11 @@ public class User {
     @GeneratedValue
     Long id;
  @NotBlank(message = "{LetsWriteAndShare.constraint.username.notblank}")
-    //@Size(min = 4, max = 255)
+    @Size(min = 4, max = 255 , message = "{LetsWriteAndShare.constraint.username.size}")
     String username;
     @NotBlank
     @Email
-    @UniqueEmail
+    //@UniqueEmail
     String email;
 
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$" , message = "{LetsWriteAndShare.constraint.password.pattern}")
