@@ -2,6 +2,7 @@ package com.LetsWriteAndShare.lwas.Controller;
 
 
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
+import com.LetsWriteAndShare.lwas.dto.UserCreate;
 import com.LetsWriteAndShare.lwas.entity.User;
 import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.UserService;
@@ -35,9 +36,9 @@ public class UserController {
     }
 
     @PostMapping("/api/v1/users")
-    GenericMessage createUser(@Valid @RequestBody User user) {
+    GenericMessage createUser(@Valid @RequestBody UserCreate user) {
 
-        userService.save(user);
+        userService.save(user.toUser());
         String message = Messages.getMessageForLocale("LetsWriteAndShare.create.user.success.message", LocaleContextHolder.getLocale());
 
         return new GenericMessage(message);

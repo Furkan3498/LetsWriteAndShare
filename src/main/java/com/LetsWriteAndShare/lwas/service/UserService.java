@@ -8,6 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
+
 @Service
 public class UserService {
 
@@ -28,6 +31,7 @@ public class UserService {
         try {
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);
+            user.setActivationToken(UUID.randomUUID().toString());
             //  user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
 

@@ -28,6 +28,26 @@ public class User {
     @Size(min = 3, max = 255 ,message = "{LetsWriteAndShare.constraint.password.size}")
     String password;
 
+    boolean active = false;
+
+    String activationToken;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getActivationToken() {
+        return activationToken;
+    }
+
+    public void setActivationToken(String activationToken) {
+        this.activationToken = activationToken;
+    }
+
     public Long getId() {
         return id;
     }
