@@ -40,7 +40,8 @@ public class UserService {
             user.setPassword(encodedPassword);
             user.setActivationToken(UUID.randomUUID().toString());
             //  user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
+            userRepository.saveAndFlush(user); //save metodunda Transactional dolayı NotUniqueEmailException metodu dönmüyordu. DataIntegrityViolationException dönüyordu.
+            //Transactional ProxyUserServiceten döndürüyor böylece save metoduna gelmeden cathten DataIntegrityViolationException dönüyordu. saveAndFlush yazarak o catch bu servise dönüyor
             sendActivationEmail(user);
         } catch (DataIntegrityViolationException ex) {
             throw new NotUniqueEmailException();
@@ -64,7 +65,7 @@ public class UserService {
             mailSender.setHost("smtp.ethereal.email");
             mailSender.setPort(	587);
             mailSender.setUsername("abdul.howe28@ethereal.email");
-            mailSender.setPassword("74pT5AdyKZDqjxeE6v-");
+            mailSender.setPassword("74pT5AdyKZDqjxeE6v");
 
 
             Properties properties = mailSender.getJavaMailProperties();
