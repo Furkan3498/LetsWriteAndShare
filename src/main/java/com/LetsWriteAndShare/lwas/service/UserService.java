@@ -1,5 +1,6 @@
 package com.LetsWriteAndShare.lwas.service;
 
+import com.LetsWriteAndShare.lwas.Exception.ActivationNotificationException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.Repository.UserRepository;
 import com.LetsWriteAndShare.lwas.entity.User;
@@ -45,6 +46,8 @@ public class UserService {
             sendActivationEmail(user);
         } catch (DataIntegrityViolationException ex) {
             throw new NotUniqueEmailException();
+        }catch (MailException ex){
+            throw new ActivationNotificationException();
         }
 
     }

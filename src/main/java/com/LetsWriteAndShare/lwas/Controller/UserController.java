@@ -1,6 +1,7 @@
 package com.LetsWriteAndShare.lwas.Controller;
 
 
+import com.LetsWriteAndShare.lwas.Exception.ActivationNotificationException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.dto.UserCreate;
 import com.LetsWriteAndShare.lwas.entity.User;
@@ -78,8 +79,24 @@ public class UserController {
         apiErrors.setStatus(400);
 
         apiErrors.setValidationErrors(exception.getValidErrors());
-        return ResponseEntity.badRequest().body(apiErrors);
+        return ResponseEntity.status(400).body(apiErrors);
 
 
     }
+    @ExceptionHandler(ActivationNotificationException.class)
+
+    ResponseEntity<ApiErrors> handleActivationNotificationException(ActivationNotificationException exception) {
+        ApiErrors apiErrors = new ApiErrors();
+
+        apiErrors.setPath("/api/v1/users");
+
+        apiErrors.setMessage(exception.getMessage());
+        apiErrors.setStatus(502);
+
+        return ResponseEntity.status(502).body(apiErrors);
+
+
+    }
+
+
 }

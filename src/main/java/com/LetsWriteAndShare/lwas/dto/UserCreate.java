@@ -21,18 +21,15 @@ public record UserCreate(
         String password
 ) {
 
-  public User toUser(){
+    public User toUser() {
 
-          User user = new User();
-          user.setUsername(username);
-          user.setEmail(email);
-          user.setPassword(password);
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
 
-                return  user;
-
-
+        return user;
 
 
-
-  }
+    }
 }
