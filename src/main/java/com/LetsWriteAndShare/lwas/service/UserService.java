@@ -3,8 +3,10 @@ package com.LetsWriteAndShare.lwas.service;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.Repository.UserRepository;
 import com.LetsWriteAndShare.lwas.entity.User;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -30,9 +32,9 @@ public class UserService {
     }
 
 
+
+    @Transactional(rollbackOn = MailException.class )
     public void save(User user) {
-
-
         try {
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);
@@ -62,7 +64,7 @@ public class UserService {
             mailSender.setHost("smtp.ethereal.email");
             mailSender.setPort(	587);
             mailSender.setUsername("abdul.howe28@ethereal.email");
-            mailSender.setPassword("74pT5AdyKZDqjxeE6v");
+            mailSender.setPassword("74pT5AdyKZDqjxeE6v-");
 
 
             Properties properties = mailSender.getJavaMailProperties();
