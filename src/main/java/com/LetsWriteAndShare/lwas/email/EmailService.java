@@ -1,6 +1,9 @@
 package com.LetsWriteAndShare.lwas.email;
 
-import com.LetsWriteAndShare.lwas.entity.User;
+
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -13,16 +16,32 @@ public class EmailService {
 
     JavaMailSenderImpl mailSender;
 
-    public EmailService() {
-        this.initialize();
-    }
+
+  @Value("${LetsWriteAndShare.email.host}")
+    String host;
+
+    @Value("${LetsWriteAndShare.email.password}")
+    String password;
+
+
+    @Value("${LetsWriteAndShare.email.username}")
+    String username;
+    @Value("${LetsWriteAndShare.email.port}")
+    int port;
+    @Value("${LetsWriteAndShare.email.from}")
+    String from;
+    @Value("${LetsWriteAndShare.client.host}")
+    String clientHost;
+    @PostConstruct
+    // constructor edildikten sonra bu fonksiyonu cağır demek cünkü diğer türlü değerler instace create edildikten sonra spring tarafından set ediliyor.
+    //construc edildikten sonra @Value ler asigne ediliyor
 
     public void initialize(){
      this.mailSender= new JavaMailSenderImpl();
-        mailSender.setHost("smtp.ethereal.email");
-        mailSender.setPort(	587);
-        mailSender.setUsername("abdul.howe28@ethereal.email");
-        mailSender.setPassword("74pT5AdyKZDqjxeE6v");
+        mailSender.setHost(host);
+        mailSender.setPort(	port);
+        mailSender.setUsername(username);
+        mailSender.setPassword(password);
 
 
         Properties properties = mailSender.getJavaMailProperties();
@@ -34,11 +53,13 @@ public class EmailService {
 
     }
     public void sendActivationEmail(String email, String activationToken) {
+
+        var activationURL = clientHost + "/activation" + activationToken;
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("furkan@this-app.com");
+        message.setFrom(from);
         message.setTo(email);
         message.setSubject("Account Activation");
-        message.setText("http://localhost:5173/activaiton/" + activationToken);
+        message.setText(activationURL);
 
         this.mailSender.send(message);
 
