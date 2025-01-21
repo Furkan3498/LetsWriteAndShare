@@ -54,7 +54,7 @@ public class EmailService {
     }
     public void sendActivationEmail(String email, String activationToken) {
 
-        var activationURL = clientHost + "/activation" + activationToken;
+        var activationURL = clientHost + "/activation/" + activationToken;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(email);
