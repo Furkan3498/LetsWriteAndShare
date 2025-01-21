@@ -1,6 +1,8 @@
 package com.LetsWriteAndShare.lwas.email;
 
 
+import ch.qos.logback.core.net.server.Client;
+import com.LetsWriteAndShare.lwas.LwasApplication;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+import java.net.InetAddress;
 import java.util.Properties;
 
 @Service
@@ -17,7 +20,7 @@ public class EmailService {
     JavaMailSenderImpl mailSender;
 
 
-  @Value("${LetsWriteAndShare.email.host}")
+    @Value("${LetsWriteAndShare.email.host}")
     String host;
 
     @Value("${LetsWriteAndShare.email.password}")
@@ -32,26 +35,29 @@ public class EmailService {
     String from;
     @Value("${LetsWriteAndShare.client.host}")
     String clientHost;
+
     @PostConstruct
     // constructor edildikten sonra bu fonksiyonu cağır demek cünkü diğer türlü değerler instace create edildikten sonra spring tarafından set ediliyor.
     //construc edildikten sonra @Value ler asigne ediliyor
 
-    public void initialize(){
-     this.mailSender= new JavaMailSenderImpl();
+    public void initialize() {
+        System.err.println(clientHost);
+
+        this.mailSender = new JavaMailSenderImpl();
+
+
         mailSender.setHost(host);
-        mailSender.setPort(	port);
+        mailSender.setPort(port);
         mailSender.setUsername(username);
         mailSender.setPassword(password);
 
 
         Properties properties = mailSender.getJavaMailProperties();
-        properties.put("mail.smtp.starttls.enable" , "true");
-
-
-
+        properties.put("mail.smtp.starttls.enable", "true");
 
 
     }
+
     public void sendActivationEmail(String email, String activationToken) {
 
         var activationURL = clientHost + "/activation/" + activationToken;
