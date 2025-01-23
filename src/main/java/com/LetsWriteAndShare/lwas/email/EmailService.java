@@ -41,7 +41,7 @@ public class EmailService {
     //construc edildikten sonra @Value ler asigne ediliyor
 
     public void initialize() {
-        System.err.println(clientHost);
+
 
         this.mailSender = new JavaMailSenderImpl();
 
@@ -57,6 +57,17 @@ public class EmailService {
 
 
     }
+
+
+    String activationEmail = """
+            
+            <html>
+                <body>
+                     <h1> </h1>
+                     <a href= "${url}"> Click Here </a>
+                </body>
+            </html>
+            """;
 
     public void sendActivationEmail(String email, String activationToken) {
 
