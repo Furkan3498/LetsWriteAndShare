@@ -77,21 +77,21 @@ public class EmailService {
         var activationURL = clientHost + "/activation/" + activationToken;
 
         var title = messageSource.getMessage("LetsWriteAndShare.mail.user.created.title", null, LocaleContextHolder.getLocale());
-        var clichere = messageSource.getMessage("LetsWriteAndShare.mail.user.click.here", null, LocaleContextHolder.getLocale());
+        var clickhere = messageSource.getMessage("LetsWriteAndShare.mail.click.here", null, LocaleContextHolder.getLocale());
 
 
 
         var mailBody= activationEmail
                 .replace("${url}",activationURL)
                 .replace("${title}", title)
-                .replace("${clickHere}", clichere);
+                .replace("${clickHere}", clickhere);
         MimeMessage mimeMessage = mailSender.createMimeMessage();
        MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
 
         try {
 
             message.setFrom(from);
-            message.setTo(email);;
+            message.setTo(email);
             message.setSubject(title);
             message.setText(mailBody,true);
         }catch (MailException | MessagingException e){
