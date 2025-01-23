@@ -1,17 +1,18 @@
 package com.LetsWriteAndShare.lwas.email;
 
 
-import ch.qos.logback.core.net.server.Client;
-import com.LetsWriteAndShare.lwas.LwasApplication;
+
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.net.InetAddress;
 import java.util.Properties;
 
 @Service
@@ -22,11 +23,8 @@ public class EmailService {
 
     @Value("${LetsWriteAndShare.email.host}")
     String host;
-
     @Value("${LetsWriteAndShare.email.password}")
     String password;
-
-
     @Value("${LetsWriteAndShare.email.username}")
     String username;
     @Value("${LetsWriteAndShare.email.port}")
@@ -63,7 +61,7 @@ public class EmailService {
             
             <html>
                 <body>
-                     <h1> </h1>
+                     <h1> Activate Account </h1>
                      <a href= "${url}"> Click Here </a>
                 </body>
             </html>
@@ -72,14 +70,58 @@ public class EmailService {
     public void sendActivationEmail(String email, String activationToken) {
 
         var activationURL = clientHost + "/activation/" + activationToken;
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from);
-        message.setTo(email);
-        message.setSubject("Account Activation");
-        message.setText(activationURL);
+        var mailBody= activationEmail.replace("${url}",activationURL);
 
-        this.mailSender.send(message);
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+       MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+
+        try {
+
+            message.setFrom(from);
+            message.setTo(email);;
+            message.setSubject("Account Activation");
+            message.setText(mailBody,true);
+        }catch (MailException | MessagingException e){
+            e.printStackTrace();
+        }
+
+
+        this.mailSender.send(mimeMessage);
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
