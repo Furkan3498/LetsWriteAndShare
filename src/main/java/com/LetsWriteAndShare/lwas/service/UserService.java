@@ -1,6 +1,7 @@
 package com.LetsWriteAndShare.lwas.service;
 
 import com.LetsWriteAndShare.lwas.Exception.ActivationNotificationException;
+import com.LetsWriteAndShare.lwas.Exception.InvalidTokenException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.Repository.UserRepository;
 import com.LetsWriteAndShare.lwas.email.EmailService;
@@ -52,5 +53,13 @@ public class UserService {
 
 
     public void activateUser(String token) {
+        User inDb = userRepository.findByActivationToken(token);
+        if (inDb ==null ){
+            throw  new InvalidTokenException();
+        }
+        inDb.setActive(true);
+        inDb.setActivationToken(null);
+        userRepository.save(inDb);
+
     }
 }

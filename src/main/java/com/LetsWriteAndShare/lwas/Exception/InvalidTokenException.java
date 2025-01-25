@@ -1,4 +1,4 @@
 package com.LetsWriteAndShare.lwas.Exception;
 
-public class InvalidTokenException {
+public class InvalidTokenException extends RuntimeException{
 }
