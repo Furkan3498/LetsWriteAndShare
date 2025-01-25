@@ -51,18 +51,6 @@ public class UserService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void activateUser(String token) {
+    }
 }

@@ -45,6 +45,15 @@ public class UserController {
         return new GenericMessage(message);
     }
 
+    @PatchMapping("/api/v1/users/{token}/active")
+    GenericMessage activateUser(@PathVariable String token) {
+
+       userService.activateUser(token);
+        String message = Messages.getMessageForLocale("LetsWriteAndShare.activate.user.success.message", LocaleContextHolder.getLocale());
+
+        return new GenericMessage(message);
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
         //@ResponseStatus(HttpStatus.BAD_REQUEST)
