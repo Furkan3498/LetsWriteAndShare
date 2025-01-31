@@ -56,10 +56,10 @@ public class UserService {
         User inDb = userRepository.findByActivationToken(token);
         if (inDb ==null ){
             throw  new InvalidTokenException();
-        }
+        }else{
         inDb.setActive(true);
         inDb.setActivationToken(null);
         userRepository.save(inDb);
-
+        }
     }
 }

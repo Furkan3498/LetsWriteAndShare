@@ -95,7 +95,7 @@ public class UserController {
     }
     @ExceptionHandler(ActivationNotificationException.class)
 
-    ResponseEntity<ApiErrors> handleActivationNotificationException(ActivationNotificationException exception) {
+    public ResponseEntity<ApiErrors> handleActivationNotificationException(ActivationNotificationException exception) {
         ApiErrors apiErrors = new ApiErrors();
 
         apiErrors.setPath("/api/v1/users");
@@ -108,7 +108,7 @@ public class UserController {
 
     }
     @ExceptionHandler(InvalidTokenException.class)
-    ResponseEntity<ApiErrors> handleInvalidTokenException(InvalidTokenException exception) {
+    public ResponseEntity<ApiErrors> handleInvalidTokenException(InvalidTokenException exception) {
         ApiErrors apiErrors = new ApiErrors();
         apiErrors.setPath("/api/v1/users");
         apiErrors.setMessage(exception.getMessage());
