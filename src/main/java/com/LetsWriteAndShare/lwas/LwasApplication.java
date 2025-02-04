@@ -28,8 +28,8 @@ public class LwasApplication {
           return ( args) -> {
                 for (var i = 1; i <= 25; i++) {
                     User user = new User();
-                    user.setUsername("user" + i);
-                    user.setEmail("user" + i + "@gmail.com");
+                    user.setUsername("userdeneme" + i);
+                    user.setEmail("usermail" + i + "@gmail.com");
                     user.setPassword(passwordEncoder.encode("P4ssword"));
                     user.setActive(true);
                     userRepository.save(user);
