@@ -20,6 +20,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,13 @@ public class UserController {
 
         return new GenericMessage(message);
     }
+    @GetMapping("/api/v1/users")
+    List<User> getUsers(){
+        return userService.getUsers();
+    }
+
+
+
 
     @PatchMapping("/api/v1/users/{token}/active")
     GenericMessage activateUser(@PathVariable String token) {
