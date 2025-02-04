@@ -20,25 +20,22 @@ public class LwasApplication {
 
 
     @Bean
-	@Profile("dev")
+    @Profile("dev")
     CommandLineRunner userCreator(UserRepository userRepository) {
 
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-		return  new CommandLineRunner() {
-
-			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			@Override
-			public void run(String... args) throws Exception {
-					for (var i= 1; i<=25 ;i++){
-						User user = new User();
-						user.setUsername("user" + 1);
-						user.setEmail("user"+i+"@gmail.com");
-						user.setPassword(passwordEncoder.encode("P4ssword"));
-						user.setActive(true);
-						userRepository.save(user);
-					}
-			}
-		};
+          return ( args) -> {
+                for (var i = 1; i <= 25; i++) {
+                    User user = new User();
+                    user.setUsername("user" + i);
+                    user.setEmail("user" + i + "@gmail.com");
+                    user.setPassword(passwordEncoder.encode("P4ssword"));
+                    user.setActive(true);
+                    userRepository.save(user);
+                }
+            };
+        };
 
     }
-}
+
