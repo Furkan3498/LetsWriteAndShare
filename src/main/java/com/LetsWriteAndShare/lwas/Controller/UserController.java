@@ -55,6 +55,11 @@ public class UserController {
     }
 
 
+    @GetMapping("/api/v1/users/{id}")
+    UserDto getUserById(@PathVariable long id){
+        return new UserDto( userService.getUser(id));
+    }
+
 
 
     @PatchMapping("/api/v1/users/{token}/active")
