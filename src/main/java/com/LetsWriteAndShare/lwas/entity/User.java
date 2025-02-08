@@ -2,6 +2,7 @@ package com.LetsWriteAndShare.lwas.entity;
 
 
 import com.LetsWriteAndShare.lwas.validation.UniqueEmail;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,11 +22,24 @@ public class User {
 
     String email;
 
+
+    @JsonIgnore
     String password;
+    @JsonIgnore
 
     boolean active = false;
-
+    @JsonIgnore
     String activationToken;
+    String image;
+    //toString yapmadım daha
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public boolean isActive() {
         return active;
