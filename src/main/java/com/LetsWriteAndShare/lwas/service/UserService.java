@@ -8,6 +8,8 @@ import com.LetsWriteAndShare.lwas.email.EmailService;
 import com.LetsWriteAndShare.lwas.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,8 +66,8 @@ public class UserService {
         }
     }
 
-    public List<User> getUsers() {
+    public Page<User> getUsers() {
 
-        return  userRepository.findAll();
+        return  userRepository.findAll(PageRequest.of(0,3));
     }
 }
