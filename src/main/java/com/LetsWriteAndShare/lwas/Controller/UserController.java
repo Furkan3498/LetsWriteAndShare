@@ -11,6 +11,8 @@ import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.UserService;
 import com.LetsWriteAndShare.lwas.utils.GenericMessage;
 import com.LetsWriteAndShare.lwas.utils.Messages;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -124,13 +126,24 @@ public class UserController {
 
     }
     @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ApiErrors> handleInvalidTokenException(InvalidTokenException exception) {
+    public ResponseEntity<ApiErrors> handleInvalidTokenException(InvalidTokenException exception, HttpServletRequest request) {
         ApiErrors apiErrors = new ApiErrors();
-        apiErrors.setPath("/api/v1/users");
+        apiErrors.setPath(request.getRequestURI());
         apiErrors.setMessage(exception.getMessage());
         apiErrors.setStatus(400);
 
         return ResponseEntity.status(400).body(apiErrors);
+
+
+    }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiErrors> handleEntityNotFoundException(EntityNotFoundException exception , HttpServletRequest request) {
+        ApiErrors apiErrors = new ApiErrors();
+        apiErrors.setPath(request.getRequestURI());
+        apiErrors.setMessage("Not Found");
+        apiErrors.setStatus(404);
+
+        return ResponseEntity.status(404).body(apiErrors);
 
 
     }
