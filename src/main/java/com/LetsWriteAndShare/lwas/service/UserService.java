@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,8 +67,8 @@ public class UserService {
         }
     }
 
-    public Page<User> getUsers(int page , int size) {
+    public Page<User> getUsers(Pageable page) {
 
-        return  userRepository.findAll(PageRequest.of(page,size));
+        return  userRepository.findAll(page);
     }
 }
