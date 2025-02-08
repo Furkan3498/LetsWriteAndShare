@@ -13,6 +13,8 @@ import com.LetsWriteAndShare.lwas.utils.Messages;
 import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -47,8 +49,8 @@ public class UserController {
         return new GenericMessage(message);
     }
     @GetMapping("/api/v1/users")
-    List<User> getUsers(){
-        return userService.getUsers();
+    Page<User> getUsers(Pageable page){
+        return userService.getUsers(page);
     }
 
 
