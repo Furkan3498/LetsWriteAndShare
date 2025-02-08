@@ -66,8 +66,8 @@ public class UserService {
         }
     }
 
-    public Page<User> getUsers() {
+    public Page<User> getUsers(int page , int size) {
 
-        return  userRepository.findAll(PageRequest.of(0,3));
+        return  userRepository.findAll(PageRequest.of(page,size));
     }
 }

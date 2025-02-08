@@ -48,8 +48,8 @@ public class UserController {
         return new GenericMessage(message);
     }
     @GetMapping("/api/v1/users")
-    Page<User> getUsers(){
-        return userService.getUsers();
+    Page<User> getUsers( @RequestParam(defaultValue = "0") int page ,@RequestParam(defaultValue = "10") int size ){
+        return userService.getUsers(page,size);
     }
 
 
