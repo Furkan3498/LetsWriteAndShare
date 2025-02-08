@@ -44,7 +44,7 @@ public class UserDto {
     }
 
     public String getImage() {
-        return image ==null ? "default.png" : image;
+        return image ;
     }
 
     public void setImage(String image) {

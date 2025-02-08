@@ -5,6 +5,7 @@ import com.LetsWriteAndShare.lwas.Exception.ActivationNotificationException;
 import com.LetsWriteAndShare.lwas.Exception.InvalidTokenException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.dto.UserCreate;
+import com.LetsWriteAndShare.lwas.dto.UserDto;
 import com.LetsWriteAndShare.lwas.entity.User;
 import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.UserService;
@@ -49,8 +50,8 @@ public class UserController {
         return new GenericMessage(message);
     }
     @GetMapping("/api/v1/users")
-    Page<User> getUsers(Pageable page){
-        return userService.getUsers(page);
+    Page<UserDto> getUsers(Pageable page){
+        return userService.getUsers(page).map(UserDto::new);
     }
 
 
