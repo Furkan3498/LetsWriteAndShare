@@ -2,6 +2,7 @@ package com.LetsWriteAndShare.lwas.service;
 
 import com.LetsWriteAndShare.lwas.Exception.ActivationNotificationException;
 import com.LetsWriteAndShare.lwas.Exception.InvalidTokenException;
+import com.LetsWriteAndShare.lwas.Exception.NotFoundException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.Repository.UserRepository;
 import com.LetsWriteAndShare.lwas.dto.UserDto;
@@ -75,7 +76,7 @@ public class UserService {
 
     public User getUser(long id) {
 
-        return  userRepository.getReferenceById(id);
+        return  userRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
 
 
     }
