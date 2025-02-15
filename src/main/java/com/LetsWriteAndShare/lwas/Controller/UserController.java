@@ -3,6 +3,7 @@ package com.LetsWriteAndShare.lwas.Controller;
 
 import com.LetsWriteAndShare.lwas.Exception.ActivationNotificationException;
 import com.LetsWriteAndShare.lwas.Exception.InvalidTokenException;
+import com.LetsWriteAndShare.lwas.Exception.NotFoundException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.dto.UserCreate;
 import com.LetsWriteAndShare.lwas.dto.UserDto;
@@ -136,11 +137,11 @@ public class UserController {
 
 
     }
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiErrors> handleEntityNotFoundException(EntityNotFoundException exception , HttpServletRequest request) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiErrors> handleEntityNotFoundException(NotFoundException exception , HttpServletRequest request) {
         ApiErrors apiErrors = new ApiErrors();
         apiErrors.setPath(request.getRequestURI());
-        apiErrors.setMessage("Not Found");
+        apiErrors.setMessage(exception.getMessage());
         apiErrors.setStatus(404);
 
         return ResponseEntity.status(404).body(apiErrors);
