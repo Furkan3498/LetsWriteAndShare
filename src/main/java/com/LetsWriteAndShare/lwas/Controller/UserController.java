@@ -3,13 +3,17 @@ package com.LetsWriteAndShare.lwas.Controller;
 
 import com.LetsWriteAndShare.lwas.Exception.ActivationNotificationException;
 import com.LetsWriteAndShare.lwas.Exception.InvalidTokenException;
+import com.LetsWriteAndShare.lwas.Exception.NotFoundException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.dto.UserCreate;
+import com.LetsWriteAndShare.lwas.dto.UserDto;
 import com.LetsWriteAndShare.lwas.entity.User;
 import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.UserService;
 import com.LetsWriteAndShare.lwas.utils.GenericMessage;
 import com.LetsWriteAndShare.lwas.utils.Messages;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -49,10 +53,15 @@ public class UserController {
         return new GenericMessage(message);
     }
     @GetMapping("/api/v1/users")
-    Page<User> getUsers(Pageable page){
-        return userService.getUsers(page);
+    Page<UserDto> getUsers(Pageable page){
+        return userService.getUsers(page).map(UserDto::new);
     }
 
+
+    @GetMapping("/api/v1/users/{id}")
+    UserDto getUserById(@PathVariable long id){
+        return new UserDto( userService.getUser(id));
+    }
 
 
 
@@ -118,13 +127,24 @@ public class UserController {
 
     }
     @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ApiErrors> handleInvalidTokenException(InvalidTokenException exception) {
+    public ResponseEntity<ApiErrors> handleInvalidTokenException(InvalidTokenException exception, HttpServletRequest request) {
         ApiErrors apiErrors = new ApiErrors();
-        apiErrors.setPath("/api/v1/users");
+        apiErrors.setPath(request.getRequestURI());
         apiErrors.setMessage(exception.getMessage());
         apiErrors.setStatus(400);
 
         return ResponseEntity.status(400).body(apiErrors);
+
+
+    }
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiErrors> handleEntityNotFoundException(NotFoundException exception , HttpServletRequest request) {
+        ApiErrors apiErrors = new ApiErrors();
+        apiErrors.setPath(request.getRequestURI());
+        apiErrors.setMessage(exception.getMessage());
+        apiErrors.setStatus(404);
+
+        return ResponseEntity.status(404).body(apiErrors);
 
 
     }

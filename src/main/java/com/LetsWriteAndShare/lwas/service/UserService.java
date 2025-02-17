@@ -2,8 +2,10 @@ package com.LetsWriteAndShare.lwas.service;
 
 import com.LetsWriteAndShare.lwas.Exception.ActivationNotificationException;
 import com.LetsWriteAndShare.lwas.Exception.InvalidTokenException;
+import com.LetsWriteAndShare.lwas.Exception.NotFoundException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.Repository.UserRepository;
+import com.LetsWriteAndShare.lwas.dto.UserDto;
 import com.LetsWriteAndShare.lwas.email.EmailService;
 import com.LetsWriteAndShare.lwas.entity.User;
 import jakarta.transaction.Transactional;
@@ -70,5 +72,12 @@ public class UserService {
     public Page<User> getUsers(Pageable page) {
 
         return  userRepository.findAll(page);
+    }
+
+    public User getUser(long id) {
+
+        return  userRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
+
+
     }
 }
