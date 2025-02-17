@@ -5,6 +5,7 @@
     "password" : "Sifre",
     "passwordRepeat" : "Sifre Tekrari",
     "passwordMismatch" : "Sifreniz Eslesmiyor",
-    "genericError" : "Beklenmedik bir hata olustu. Tekrar deneyin"
+    "genericError" : "Beklenmedik bir hata olustu. Tekrar deneyin",
+    "userNotFoundError" : "Kullanici Bulunamadi"
    
   }

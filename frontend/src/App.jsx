@@ -15,18 +15,20 @@ function App() {
     <>
        <nav className="navbar navbar-expand bg-body-tertiary shadow-sm">
        <div className="container-fluid">
-       <Link className="navbar-brand" to="/">
-        <img src={logo} width={60}/>  
-        LetsWriteAndShare
-       </Link>
-        <ul className="navbar-nav">
+        <Link className="navbar-brand" to="/">
+         <img src={logo} width={60}/>  
+          LetsWriteAndShare
+          </Link>
+           <ul className="navbar-nav">
           <li className="navbar-item">
-            <Link class Name="nav-link" to = "/signup"> {t('signUp')}</Link>
-          </li>
-        </ul>
+              <Link class Name="nav-link" to = "/signup"> {t('signUp')}</Link>
+           </li>
+          </ul>
        </div>
        </nav>
        <div className="container mt-3">
+        <div> <Link to="/user/1"> User 1</Link>  </div>
+        <div> <Link to="/user/2"> User 2</Link>  </div>
      <Outlet/>
      <LanguageSelector />
      </div>
