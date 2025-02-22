@@ -27,8 +27,7 @@ function App() {
        </div>
        </nav>
        <div className="container mt-3">
-        <div> <Link to="/user/1"> User 1</Link>  </div>
-        <div> <Link to="/user/2"> User 2</Link>  </div>
+    
      <Outlet/>
      <LanguageSelector />
      </div>

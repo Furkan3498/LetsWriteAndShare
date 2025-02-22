@@ -1,42 +1,21 @@
 import { useEffect , useState } from "react"
 import { useParams } from "react-router-dom"
 import {  activateUser } from "./api";
+import { useRouteParamApiRequest } from "@/Shared/hooks/useRouteParamApiRequest";
 
 export function Activation(){
-    const { token }  =useParams()
-    const [apiProgress, setApiProgress] = useState();
-    const [successMessage, setSuccessMessage] = useState();
-    const [errorMessage, setErrorMessage] = useState();
-
-
-
-    useEffect(() => {
-
-            async function activate() {
-                    setApiProgress(true);
-                try {
-                   const response = await activateUser(token);
-                   setSuccessMessage(response.data.message)
-                } catch (axiosError) {
-                    setErrorMessage(axiosError.response.data.message)
-                }finally{
-                    setApiProgress(false);
-                }
-                
-            }
-                activate();
-
-    }, [] )
+          const {apiProgress, data,error} =    useRouteParamApiRequest('token', activateUser)
+   
    return (
     <>
 
         { apiProgress &&  (<span class="spinner-border " aria-hidden="true"></span>)}
-        {successMessage && (
+        {data.message && (
       <div className="alert alert-success">
-        {successMessage} </div>)}
-        {errorMessage && 
+        {data?.message} </div>)}
+        {error && 
       <div className="alert alert-danger" >
-        {errorMessage} </div>}
+        {error} </div>}
     </>
    );
 }
