@@ -2,7 +2,10 @@ package com.LetsWriteAndShare.lwas.service;
 
 
 import com.LetsWriteAndShare.lwas.Exception.AuthenticationException;
+import com.LetsWriteAndShare.lwas.auth.Token;
+import com.LetsWriteAndShare.lwas.dto.AuthResponse;
 import com.LetsWriteAndShare.lwas.dto.Credentials;
+import com.LetsWriteAndShare.lwas.dto.UserDto;
 import com.LetsWriteAndShare.lwas.entity.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,13 +16,19 @@ public class AuthService {
 
     private final UserService userService;
 
-    public AuthService(UserService userService) {
+    //we injected TokenService. Token Service is a Interface
+    //Spring will search any bean implement that TokenService
+    //we used @Service Annotation on BacisAuthTokenService so that be a bean
+    private final TokenService tokenService;
+
+    public AuthService(UserService userService, TokenService tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
 
     PasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
-    public void authenticate(Credentials credentials) {
+    public AuthResponse authenticate(Credentials credentials) {
 
         User inDb = userService.findByUser(credentials.email());
         if (inDb == null) throw  new AuthenticationException();
@@ -27,6 +36,12 @@ public class AuthService {
         //first we must to convert password
         //we can use passwordEncoder.matches
        if (!passwordEncoder.matches(credentials.password(), inDb.getPassword())) throw new AuthenticationException();
+
+       Token token = tokenService.createToken(inDb,credentials);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setToken(token);
+        authResponse.setUserDto(new UserDto(inDb));
+        return authResponse;
 
     }
 }

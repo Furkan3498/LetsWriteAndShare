@@ -1,6 +1,7 @@
 package com.LetsWriteAndShare.lwas.Controller;
 
 import com.LetsWriteAndShare.lwas.Exception.AuthenticationException;
+import com.LetsWriteAndShare.lwas.dto.AuthResponse;
 import com.LetsWriteAndShare.lwas.dto.Credentials;
 import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.AuthService;
@@ -21,9 +22,9 @@ public class AuthController {
     }
 
     @PostMapping("/api/v1/auth")
-    void handleAuthentication(@RequestBody Credentials credentials){
+    AuthResponse handleAuthentication(@RequestBody Credentials credentials){
 
-        authService.authenticate(credentials);
+       return authService.authenticate(credentials);
 
     }
 
