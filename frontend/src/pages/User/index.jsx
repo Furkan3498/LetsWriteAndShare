@@ -1,62 +1,34 @@
-import { Component } from "react"
-import { useParams } from "react-router-dom"
 import { getUser } from "./api";
-import { Alert } from "@/Shared/components/Alert";
-import { withTranslation } from "react-i18next";
+import { Alert } from "../../shared/components/Alert";
+import { Spinner } from "../../shared/components/Spinner";
+import { Component , useEffect , useState } from "react"
+import { useParams } from "react-router-dom"
 
-export class UserClass extends Component{
+import { useRouteParamApiRequest } from "@/Shared/hooks/useRouteParamApiRequest";
+import { ProfileCard } from "./components/ProfileCard";
 
-    state={
-        user : null,
-         apiProgress : false,
-        error:null,
 
-    };
-
-//component first
-    async componentDidCatch(){
-      this.setState({apiProgress : true});
-
-            try{
-                const response =  await getUser(this.props.id)
-                this.setState({
-                    user : response.data,
-                });
-            } catch (axiosError) {
-                    this.setState({
-                    error: this.props.t('userNotFoundError'),
-                    });
-            }finally{
-                this.setState({apiProgress :false})
-            }
-    }
-
-        //component update
-    componentDidUpdate(){
-
-    }
-
-    //component close
-    componentWillUnmount(){
-
-    }
-
-    render(){
-        return <>
-        {this.state.user && <h1> {this.state.user.username} </h1>}
-   {this.state.error && <Alert styleType = "danger"> {this.state.error}</Alert>}
-        </>
-    }
- 
- 
-}
-
-const UserPageWithTranslation = withTranslation()(UserClass)
 
 export function User() {
-    const{id} = useParams();
 
-
-    return <UserPageWithTranslation id= {id} />
+    const {
+        apiProgess,
+        data: user,
+        error,
+      } = useRouteParamApiRequest("id", getUser);
     
+    //getUser() den dolayı hata var
+    
+    
+    return (
+        <>
+          {apiProgess && (
+            <Alert styleType={"secondary"} center>
+              <Spinner />
+            </Alert>
+          )}
+          {user && <ProfileCard user={user} />}
+          {error && <Alert styleType={"danger"}>{error}</Alert>}
+        </>
+      );
 }

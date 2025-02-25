@@ -19,16 +19,18 @@ function App() {
          <img src={logo} width={60}/>  
           LetsWriteAndShare
           </Link>
-           <ul className="navbar-nav">
-          <li className="navbar-item">
-              <Link class Name="nav-link" to = "/signup"> {t('signUp')}</Link>
+           <ul className="navbar-nav  p-2">
+           <li className="nav-item p-2">
+              <Link class Name="nav-link" to = "/Login"> {t('login')}</Link>
+           </li>
+          <li className="nav-item p-2">
+              <Link class Name="nav-link p-2" to = "/signup"> {t('signUp')}</Link>
            </li>
           </ul>
        </div>
        </nav>
        <div className="container mt-3">
-        <div> <Link to="/user/1"> User 1</Link>  </div>
-        <div> <Link to="/user/2"> User 2</Link>  </div>
+    
      <Outlet/>
      <LanguageSelector />
      </div>
