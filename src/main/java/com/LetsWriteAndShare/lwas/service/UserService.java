@@ -80,4 +80,9 @@ public class UserService {
 
 
     }
+
+    public User findByUser(String email) {
+
+        return userRepository.findByEmail(email);
+    }
 }
