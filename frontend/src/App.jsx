@@ -19,9 +19,12 @@ function App() {
          <img src={logo} width={60}/>  
           LetsWriteAndShare
           </Link>
-           <ul className="navbar-nav">
-          <li className="navbar-item">
-              <Link class Name="nav-link" to = "/signup"> {t('signUp')}</Link>
+           <ul className="navbar-nav  p-2">
+           <li className="nav-item p-2">
+              <Link class Name="nav-link" to = "/Login"> {t('login')}</Link>
+           </li>
+          <li className="nav-item p-2">
+              <Link class Name="nav-link p-2" to = "/signup"> {t('signUp')}</Link>
            </li>
           </ul>
        </div>
