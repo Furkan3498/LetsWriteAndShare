@@ -5,6 +5,7 @@ import com.LetsWriteAndShare.lwas.dto.AuthResponse;
 import com.LetsWriteAndShare.lwas.dto.Credentials;
 import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/api/v1/auth")
-    AuthResponse handleAuthentication(@RequestBody Credentials credentials){
+    AuthResponse handleAuthentication(@Valid  @RequestBody Credentials credentials){
 
        return authService.authenticate(credentials);
 
