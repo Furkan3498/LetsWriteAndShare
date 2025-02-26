@@ -5,20 +5,16 @@ import com.LetsWriteAndShare.lwas.Exception.InvalidTokenException;
 import com.LetsWriteAndShare.lwas.Exception.NotFoundException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.Repository.UserRepository;
-import com.LetsWriteAndShare.lwas.dto.UserDto;
 import com.LetsWriteAndShare.lwas.email.EmailService;
 import com.LetsWriteAndShare.lwas.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.UUID;
 
 
@@ -79,5 +75,10 @@ public class UserService {
         return  userRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
 
 
+    }
+
+    public User findByUser(String email) {
+
+        return userRepository.findByEmail(email);
     }
 }
