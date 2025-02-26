@@ -1,7 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";   
-import { Input } from "../../components/Input";
+//import { Input } from "../../components/Input";
+import { Input } from "@/components/Input";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/Shared/components/Button";
+import { login } from "./api";
+
 
 
 export function Login(){
@@ -40,39 +44,33 @@ export function Login(){
  const onSubmit = async (event) =>{
 
   event.preventDefault();
-  setSuccessMessage();
   setGeneralError();
   setApiProgress(true);
   
   try {
-   // const  response =  await signUp({
-   //    username,
-   //    email,
-   //  password,
-   //  })
-   //  setSuccessMessage(response.data.message);
+    await login({email, password})
   }catch (axiosError){
 
-  //   if(axiosError.response?.data
-  //    )
-  //   { 
-   //    if( axiosError.response.data.status === 400){
-   //    setErrors(axiosError.response.data.validationErrors)}
-   //    else{
-   //      setGeneralError(axiosError.response.data.message) 
-  //     }
-    // }else{
-   //    setGeneralError(t('genericError'));
-    // }
+     if(axiosError.response?.data
+     )
+    { 
+       if( axiosError.response.data.status === 400){
+      setErrors(axiosError.response.data.validationErrors)}
+       else{
+         setGeneralError(axiosError.response.data.message) 
+       }
+     }else{
+      setGeneralError(t('genericError'));
+     }
   }finally{
-   //  setApiProgress(false)
+     setApiProgress(false);
   }
  
  // .then((response) =>{
    // setSuccessMessage(response.data.message)
   //})
   //.finally(() =>setApiProgress(false))
- }
+ };
 
 
 
@@ -100,11 +98,12 @@ export function Login(){
       <div className="alert alert-danger" role="alert">
         {generalError} </div>)}
       <div className="text-center">
-      <button 
-      className="btn btn-primary"
-      disabled={ apiProgress  || (!password || password !== passwordRepeat)}  >
-        { apiProgress &&  <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>}
-        {t('login')}   </button>
+      <Button  disabled={!email || !password}
+      apiProgress={apiProgress}
+      >
+       
+        {t("login")}
+      </Button>
       </div>
       </div>
       

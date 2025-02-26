@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { signUp } from "./api";
-import { Input } from "../../components/Input";
+//import { Input } from "../../components/Input";
+import { Input } from "@/components/Input";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/Shared/components/Button";
 
 
 export function SignUp(){
@@ -122,11 +124,13 @@ export function SignUp(){
       <div className="alert alert-danger" role="alert">
         {generalError} </div>)}
       <div className="text-center">
-      <button 
-      className="btn btn-primary"
-      disabled={ apiProgress  || (!password || password !== passwordRepeat)}  >
-        { apiProgress &&  <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>}
-        {t('signUp')}   </button>
+      
+      <Button 
+      disabled={!password || password !== passwordRepeat}
+      apiProgress={apiProgress}>
+        {t("signUp")}
+
+      </Button>
       </div>
       </div>
       
