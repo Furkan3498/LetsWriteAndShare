@@ -8,12 +8,12 @@ import { login } from "./api";
 
 
 
-export function Login(){
+export function Login({onLoginSuccess}){
 
 
   const [email ,setEmail] = useState();
   const [password ,setPassword] = useState();
-  const [apiProgress, setApiProgress] = useState(false)
+  const [apiProgress, setApiProgress] = useState();
   const [errors , setErrors] = useState({});
   const [generalError  , setGeneralError] = useState();
   const { t } = useTranslation();
@@ -41,38 +41,35 @@ export function Login(){
   }, [password])
    
  
- const onSubmit = async (event) =>{
-
-  event.preventDefault();
-  setGeneralError();
-  setApiProgress(true);
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setGeneralError();
+    setApiProgress(true);
   
-  try {
-    await login({email, password})
-  }catch (axiosError){
-
-     if(axiosError.response?.data
-     )
-    { 
-       if( axiosError.response.data.status === 400){
-      setErrors(axiosError.response.data.validationErrors)}
-       else{
-         setGeneralError(axiosError.response.data.message) 
-       }
-     }else{
-      setGeneralError(t('genericError'));
-     }
-  }finally{
-     setApiProgress(false);
-  }
- 
- // .then((response) =>{
-   // setSuccessMessage(response.data.message)
-  //})
-  //.finally(() =>setApiProgress(false))
- };
-
-
+    try {
+      const response = await login({ email, password });
+     
+      if (response.data && response.data.userDto) {
+        
+        onLoginSuccess(response.data.userDto); 
+      } else {
+        console.error('User data not found in response');
+      }
+    } catch (axiosError) {
+      console.error('Error during login:', axiosError);
+      if (axiosError.response?.data) {
+        if (axiosError.response.data.status === 400) {
+          setErrors(axiosError.response.data.validationErrors);
+        } else {
+          setGeneralError(axiosError.response.data.message);
+        }
+      } else {
+        setGeneralError(t('genericError'));
+      }
+    } finally {
+      setApiProgress(false);
+    }
+  };
 
 
 
