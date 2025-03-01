@@ -7,8 +7,12 @@ import { Button } from "@/Shared/components/Button";
 import { login } from "./api";
 
 
+import { useContext } from "react";
+import { AuthContext } from "@/Shared/state/context";  // AuthContext'i import et
+import { useNavigate } from "react-router-dom";
 
-export function Login({onLoginSuccess}){
+export function Login() {
+  const { onLoginSuccess } = useContext(AuthContext);
 
 
   const [email ,setEmail] = useState();
@@ -17,6 +21,7 @@ export function Login({onLoginSuccess}){
   const [errors , setErrors] = useState({});
   const [generalError  , setGeneralError] = useState();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
 
  
@@ -52,6 +57,7 @@ export function Login({onLoginSuccess}){
       if (response.data && response.data.userDto) {
         
         onLoginSuccess(response.data.userDto); 
+        navigate("/")
       } else {
         console.error('User data not found in response');
       }

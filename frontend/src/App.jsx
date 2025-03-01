@@ -7,29 +7,22 @@ import { data, Link ,Outlet } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import { Login } from './pages/Login';
 import { Navbar } from './Shared/components/NavBar';
+import { AuthContext, AuthenticationContext } from './Shared/state/context';
 
 
 function App() {
-  const [ authState, setAuthState] = useState({
-    id: 0
-  })
+  
 
-  const onLoginSuccess = (data) =>{
-    console.log('Auth state before update:', authState); // authState'i önceden kontrol edin
-  setAuthState(data);
-  console.log('Auth state after update:', data); // authState güncellendikten sonra kontrol edin
-
-  }
   return (
-    <>
-     <Navbar authState={authState}/>
+    <AuthenticationContext>
+     <Navbar />
       <div className="container mt-3">
        
-        <Login onLoginSuccess={onLoginSuccess}/>
-        {/* <Outlet /> */}
+       { /*<Login onLoginSuccess={onLoginSuccess}/>*/}
+        <Outlet /> 
         <LanguageSelector />
       </div>
-    </>
+    </AuthenticationContext>
   );
 }
 

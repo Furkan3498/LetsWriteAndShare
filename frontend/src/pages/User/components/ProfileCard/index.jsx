@@ -1,5 +1,9 @@
 import defaultProfileImage from "@/assets/profile.png"
+import { useContext } from "react"
+import { AuthContext } from "@/Shared/state/context"
+import { Button } from "@/Shared/components/Button"
 export function ProfileCard({user}){
+    const authState = useContext(AuthContext)
 
     return(
         <div className="card">
@@ -17,6 +21,7 @@ export function ProfileCard({user}){
 
             <div className="card-body text-center">
                 <span className="fs-3">{user.username}</span>
+                {authState?.id === user.id && <Button> Edit</Button>}
             </div>
 
         </div>
