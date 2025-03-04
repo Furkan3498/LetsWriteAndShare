@@ -1,9 +1,8 @@
 import defaultProfileImage from "@/assets/profile.png"
-import { useContext } from "react"
-import { AuthContext } from "@/Shared/state/context"
 import { Button } from "@/Shared/components/Button"
+import { useAuthState } from "@/Shared/state/context"
 export function ProfileCard({user}){
-    const authState = useContext(AuthContext)
+    const authState = useAuthState();
 
     return(
         <div className="card">

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import logo from "../../assets/LetsWriteAndShare.png";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../Shared/state/context";
+import { AuthContext, useAuthDispatch, useAuthState } from "../../Shared/state/context";
 
 
 export function Navbar( 
@@ -10,9 +10,10 @@ export function Navbar(
     ) {
        
   const { t } = useTranslation();
-  const authState = useContext(AuthContext)
+  const authState = useAuthState();
+  const dispatch = useAuthDispatch();
   const onClickLogout = () =>{
-      authState.dispatch({type : 'logout-success'});
+     dispatch({type : 'logout-success'});
   }
 
   return (

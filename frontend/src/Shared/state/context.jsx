@@ -1,8 +1,16 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { loadAuthState, storeAuthState } from "./storage";
 import { useReducer } from "react";
 
 export const AuthContext = createContext();
+export const AuthDispatchContext = createContext();
+
+export function useAuthState(){
+    return useContext(AuthContext);
+}
+export function useAuthDispatch(){
+    return useContext(AuthDispatchContext);
+}
 
 
 const authReducer = (authState, action) =>{
@@ -39,13 +47,11 @@ export function AuthenticationContext({children}) {
 
     return(
         <AuthContext.Provider
-        value={{
-            ...authState,
-          dispatch
-        }}
-        
-        >
-                {children}
+        value={authState} >
+            <AuthDispatchContext.Provider value={dispatch}>
+            {children}
+            </AuthDispatchContext.Provider>
+                
 
 
         </AuthContext.Provider>

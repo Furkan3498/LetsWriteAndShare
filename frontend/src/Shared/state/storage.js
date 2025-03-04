@@ -1,3 +1,5 @@
+
+
 export function storeAuthState(auth){
         localStorage.setItem('auth', JSON.stringify(auth))
 }
