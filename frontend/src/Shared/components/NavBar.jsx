@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/LetsWriteAndShare.png";
 import { useContext, useState } from "react";
 import { AuthContext, useAuthDispatch, useAuthState } from "../../Shared/state/context";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutSuccess, store } from "../../Shared/state/redux";
 
 
 export function Navbar( 
@@ -10,10 +12,13 @@ export function Navbar(
     ) {
        
   const { t } = useTranslation();
-  const authState = useAuthState();
-  const dispatch = useAuthDispatch();
+  //const authState = useAuthState();
+  //const dispatch = useAuthDispatch();
+      const authState = useSelector((store) => store.auth);
+      const dispatch = useDispatch();
+
   const onClickLogout = () =>{
-     dispatch({type : 'logout-success'});
+     dispatch(logoutSuccess());
   }
 
   return (

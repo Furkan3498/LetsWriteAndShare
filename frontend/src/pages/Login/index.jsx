@@ -7,10 +7,13 @@ import { Button } from "@/Shared/components/Button";
 import { login } from "./api";
 
 
-import { useContext } from "react";
-import { AuthContext } from "@/Shared/state/context";  // AuthContext'i import et
+//import { useContext } from "react";
+//import { AuthContext } from "@/Shared/state/context";  // AuthContext'i import et
 import { useNavigate } from "react-router-dom";
-import { useAuthDispatch } from "@/Shared/state/context";;
+//import { useAuthDispatch } from "@/Shared/state/context";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/Shared/state/redux";
+;
 
 export function Login() {
    
@@ -23,7 +26,8 @@ export function Login() {
   const [generalError  , setGeneralError] = useState();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const dispatch = useAuthDispatch();
+ // const dispatch = useAuthDispatch();
+ const dispatch = useDispatch();
 
 
  
@@ -58,7 +62,8 @@ export function Login() {
      
       if (response.data && response.data.userDto) {
         
-        dispatch({type : 'login-success', data :response.data.userDto}); 
+       // dispatch({type : 'login-success', data :response.data.userDto}); 
+       dispatch(loginSuccess(response.data.userDto))
         navigate("/")
       } else {
         console.error('User data not found in response');
