@@ -12,7 +12,7 @@ export function Navbar(
   const { t } = useTranslation();
   const authState = useContext(AuthContext)
   const onClickLogout = () =>{
-      authState.onLogoutSuccess();
+      authState.dispatch({type : 'logout-success'});
   }
 
   return (

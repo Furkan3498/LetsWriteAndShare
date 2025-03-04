@@ -10,9 +10,10 @@ import { login } from "./api";
 import { useContext } from "react";
 import { AuthContext } from "@/Shared/state/context";  // AuthContext'i import et
 import { useNavigate } from "react-router-dom";
+import { authState } from "@/Shared/state/storage";
 
 export function Login() {
-  const { onLoginSuccess } = useContext(AuthContext);
+  const authState = useContext(AuthContext);
 
 
   const [email ,setEmail] = useState();
@@ -56,7 +57,7 @@ export function Login() {
      
       if (response.data && response.data.userDto) {
         
-        onLoginSuccess(response.data.userDto); 
+        authState.dispatch({type : 'login-success', data :response.data.userDto}); 
         navigate("/")
       } else {
         console.error('User data not found in response');
