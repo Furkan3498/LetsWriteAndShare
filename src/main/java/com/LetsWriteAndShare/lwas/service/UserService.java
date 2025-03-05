@@ -65,9 +65,13 @@ public class UserService {
         }
     }
 
-    public Page<User> getUsers(Pageable page) {
+    public Page<User> getUsers(Pageable page, User loggedInUser) {
 
-        return  userRepository.findAll(page);
+        if (loggedInUser ==null){
+            return  userRepository.findAll(page);
+        }
+
+            return  userRepository.findByIdNot(loggedInUser.getId(),page);
     }
 
     public User getUser(long id) {

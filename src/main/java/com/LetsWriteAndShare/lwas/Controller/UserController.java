@@ -2,6 +2,7 @@ package com.LetsWriteAndShare.lwas.Controller;
 
 import com.LetsWriteAndShare.lwas.dto.UserCreate;
 import com.LetsWriteAndShare.lwas.dto.UserDto;
+import com.LetsWriteAndShare.lwas.service.TokenService;
 import com.LetsWriteAndShare.lwas.service.UserService;
 import com.LetsWriteAndShare.lwas.utils.GenericMessage;
 import com.LetsWriteAndShare.lwas.utils.Messages;
@@ -21,10 +22,12 @@ public class UserController {
 
 
     private final UserService userService;
+    private final TokenService tokenService;
 
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TokenService tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/api/v1/users")
@@ -36,8 +39,10 @@ public class UserController {
         return new GenericMessage(message);
     }
     @GetMapping("/api/v1/users")
-    Page<UserDto> getUsers(Pageable page){
-        return userService.getUsers(page).map(UserDto::new);
+    Page<UserDto> getUsers(Pageable page, @RequestHeader(name = "Authorization" , required = false) String authorizationHeader){
+
+        var loggedInUser= tokenService.verifyToken(authorizationHeader);
+        return userService.getUsers(page, loggedInUser).map(UserDto::new);
     }
 
 
