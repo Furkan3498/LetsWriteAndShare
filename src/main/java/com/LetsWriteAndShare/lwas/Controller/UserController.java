@@ -1,5 +1,6 @@
 package com.LetsWriteAndShare.lwas.Controller;
 
+import com.LetsWriteAndShare.lwas.Exception.AuthenticationException;
 import com.LetsWriteAndShare.lwas.dto.UserCreate;
 import com.LetsWriteAndShare.lwas.dto.UserDto;
 import com.LetsWriteAndShare.lwas.dto.UserUpdate;
@@ -66,10 +67,12 @@ public class UserController {
     }
 
 @PutMapping("/api/v1/users/{id}")
-    UserDto updateUser(@PathVariable long id, @RequestBody UserUpdate userUpdate,@RequestHeader(name = "Authorization" , required = false) String authorizationHeader){
+    UserDto updateUser(@PathVariable long id,  @Valid @RequestBody UserUpdate userUpdate,@RequestHeader(name = "Authorization" , required = false) String authorizationHeader){
 
     User loggedInUser = tokenService.verifyToken(authorizationHeader);
-
+    if(loggedInUser == null || loggedInUser.getId() != id){
+        throw  new AuthenticationException();
+    }
     return  new UserDto(userService.updateUser(id,userUpdate)) ;
 }
 

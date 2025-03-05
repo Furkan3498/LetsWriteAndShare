@@ -20,7 +20,9 @@ public class ErrorHandler {
             ActivationNotificationException.class,
             InvalidTokenException.class,
             NotFoundException.class,
-            AuthenticationException.class})
+            AuthenticationException.class,
+            AuthorizationException.class
+    })
         //@ResponseStatus(HttpStatus.BAD_REQUEST)
         //ResponseEntity yerine böyle de kullanabilirdim.
     ResponseEntity<ApiErrors> handleException(Exception exception  ,HttpServletRequest request) {
@@ -56,6 +58,9 @@ public class ErrorHandler {
 
         }else if (exception instanceof  AuthenticationException) {
             apiErrors.setStatus(401);
+
+        } else if (exception instanceof  AuthorizationException) {
+            apiErrors.setStatus(403);
 
         }
         return ResponseEntity.status(apiErrors.getStatus()).body(apiErrors);
