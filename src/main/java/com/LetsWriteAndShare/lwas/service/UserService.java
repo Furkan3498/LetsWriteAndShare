@@ -5,6 +5,8 @@ import com.LetsWriteAndShare.lwas.Exception.InvalidTokenException;
 import com.LetsWriteAndShare.lwas.Exception.NotFoundException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.Repository.UserRepository;
+import com.LetsWriteAndShare.lwas.dto.UserDto;
+import com.LetsWriteAndShare.lwas.dto.UserUpdate;
 import com.LetsWriteAndShare.lwas.email.EmailService;
 import com.LetsWriteAndShare.lwas.entity.User;
 import jakarta.transaction.Transactional;
@@ -84,5 +86,14 @@ public class UserService {
     public User findByUser(String email) {
 
         return userRepository.findByEmail(email);
+    }
+
+    public User updateUser(long id, UserUpdate userUpdate) {
+
+        User inDb = getUser(id);
+        inDb.setUsername(userUpdate.username());
+        return userRepository.save(inDb);
+
+        //Mapping işlemi yapılacak
     }
 }

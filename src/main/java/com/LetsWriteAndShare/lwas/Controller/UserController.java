@@ -2,6 +2,8 @@ package com.LetsWriteAndShare.lwas.Controller;
 
 import com.LetsWriteAndShare.lwas.dto.UserCreate;
 import com.LetsWriteAndShare.lwas.dto.UserDto;
+import com.LetsWriteAndShare.lwas.dto.UserUpdate;
+import com.LetsWriteAndShare.lwas.entity.User;
 import com.LetsWriteAndShare.lwas.service.TokenService;
 import com.LetsWriteAndShare.lwas.service.UserService;
 import com.LetsWriteAndShare.lwas.utils.GenericMessage;
@@ -63,7 +65,13 @@ public class UserController {
         return new GenericMessage(message);
     }
 
+@PutMapping("/api/v1/users/{id}")
+    UserDto updateUser(@PathVariable long id, @RequestBody UserUpdate userUpdate,@RequestHeader(name = "Authorization" , required = false) String authorizationHeader){
 
+    User loggedInUser = tokenService.verifyToken(authorizationHeader);
+
+    return  new UserDto(userService.updateUser(id,userUpdate)) ;
+}
 
 
 }
