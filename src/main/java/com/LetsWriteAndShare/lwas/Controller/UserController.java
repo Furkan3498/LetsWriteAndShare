@@ -1,6 +1,7 @@
 package com.LetsWriteAndShare.lwas.Controller;
 
 import com.LetsWriteAndShare.lwas.Exception.AuthenticationException;
+import com.LetsWriteAndShare.lwas.configuration.CurrentUser;
 import com.LetsWriteAndShare.lwas.dto.UserCreate;
 import com.LetsWriteAndShare.lwas.dto.UserDto;
 import com.LetsWriteAndShare.lwas.dto.UserUpdate;
@@ -74,8 +75,7 @@ public class UserController {
     String authorizationHeader,
                        Authentication authentication){
 
-        System.err.println("---" +authentication.getPrincipal());
-
+        System.err.println(((CurrentUser)authentication.getPrincipal()).getId());
     User loggedInUser = tokenService.verifyToken(authorizationHeader);
     if(loggedInUser == null || loggedInUser.getId() != id){
         throw  new AuthenticationException();
