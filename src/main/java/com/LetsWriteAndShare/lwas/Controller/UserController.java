@@ -13,6 +13,8 @@ import jakarta.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -66,8 +68,13 @@ public class UserController {
         return new GenericMessage(message);
     }
 
-@PutMapping("/api/v1/users/{id}")
-    UserDto updateUser(@PathVariable long id,  @Valid @RequestBody UserUpdate userUpdate,@RequestHeader(name = "Authorization" , required = false) String authorizationHeader){
+    @PutMapping("/api/v1/users/{id}")
+    UserDto updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate, @RequestHeader(name = "Authorization" ,
+            required = false)
+    String authorizationHeader,
+                       Authentication authentication){
+
+        System.err.println("---" +authentication.getPrincipal());
 
     User loggedInUser = tokenService.verifyToken(authorizationHeader);
     if(loggedInUser == null || loggedInUser.getId() != id){
