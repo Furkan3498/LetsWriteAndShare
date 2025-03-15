@@ -70,14 +70,15 @@ public class UserController {
     }
 
     @PutMapping("/api/v1/users/{id}")
-    UserDto updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate, @RequestHeader(name = "Authorization" ,
-            required = false)
-    String authorizationHeader,
+    UserDto updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate,
                        Authentication authentication){
 
-        System.err.println(((CurrentUser)authentication.getPrincipal()).getId());
-    User loggedInUser = tokenService.verifyToken(authorizationHeader);
-    if(loggedInUser == null || loggedInUser.getId() != id){
+        System.err.println();
+
+
+        long logInUserId = ((CurrentUser) authentication.getPrincipal()).getId();
+
+    if(logInUserId != id){
         throw  new AuthenticationException();
     }
     return  new UserDto(userService.updateUser(id,userUpdate)) ;
