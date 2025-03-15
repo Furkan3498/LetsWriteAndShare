@@ -21,9 +21,8 @@ public class LwasApplication {
 
     @Bean
     @Profile("dev")
-    CommandLineRunner userCreator(UserRepository userRepository) {
+    CommandLineRunner userCreator(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 
-            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
           return ( args) -> {
                 for (var i = 1; i <= 25; i++) {

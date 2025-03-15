@@ -7,7 +7,6 @@ import com.LetsWriteAndShare.lwas.dto.AuthResponse;
 import com.LetsWriteAndShare.lwas.dto.Credentials;
 import com.LetsWriteAndShare.lwas.dto.UserDto;
 import com.LetsWriteAndShare.lwas.entity.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +20,15 @@ public class AuthService {
     //we used @Service Annotation on BacisAuthTokenService so that be a bean
     private final TokenService tokenService;
 
-    public AuthService(UserService userService, TokenService tokenService) {
+    private  final  PasswordEncoder passwordEncoder;
+
+    public AuthService(UserService userService, TokenService tokenService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.tokenService = tokenService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
-    PasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
     public AuthResponse authenticate(Credentials credentials) {
 
         User inDb = userService.findByUser(credentials.email());

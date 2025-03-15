@@ -3,7 +3,6 @@ package com.LetsWriteAndShare.lwas.service;
 import com.LetsWriteAndShare.lwas.auth.Token;
 import com.LetsWriteAndShare.lwas.dto.Credentials;
 import com.LetsWriteAndShare.lwas.entity.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +13,12 @@ public class BasicAuthTokenService implements TokenService{
 
     private final UserService userService;
 
-    public BasicAuthTokenService(UserService userService) {
+    public BasicAuthTokenService(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private  final PasswordEncoder passwordEncoder ;
 
 
     @Override
