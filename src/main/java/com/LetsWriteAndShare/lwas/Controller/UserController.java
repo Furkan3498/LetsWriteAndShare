@@ -15,6 +15,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,12 +29,10 @@ public class UserController {
 
 
     private final UserService userService;
-    private final TokenService tokenService;
 
 
-    public UserController(UserService userService, TokenService tokenService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.tokenService = tokenService;
     }
 
     @PostMapping("/api/v1/users")
@@ -45,10 +44,9 @@ public class UserController {
         return new GenericMessage(message);
     }
     @GetMapping("/api/v1/users")
-    Page<UserDto> getUsers(Pageable page, @RequestHeader(name = "Authorization" , required = false) String authorizationHeader){
+    Page<UserDto> getUsers(Pageable page,  @AuthenticationPrincipal CurrentUser currentUser){
 
-        var loggedInUser= tokenService.verifyToken(authorizationHeader);
-        return userService.getUsers(page, loggedInUser).map(UserDto::new);
+        return userService.getUsers(page, currentUser).map(UserDto::new);
     }
 
 
@@ -71,14 +69,11 @@ public class UserController {
 
     @PutMapping("/api/v1/users/{id}")
     UserDto updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate,
-                       Authentication authentication){
-
-        System.err.println();
+                       @AuthenticationPrincipal CurrentUser currentUser){
 
 
-        long logInUserId = ((CurrentUser) authentication.getPrincipal()).getId();
 
-    if(logInUserId != id){
+    if(currentUser.getId() != id){
         throw  new AuthenticationException();
     }
     return  new UserDto(userService.updateUser(id,userUpdate)) ;

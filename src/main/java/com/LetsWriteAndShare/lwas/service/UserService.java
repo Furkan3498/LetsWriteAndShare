@@ -5,6 +5,7 @@ import com.LetsWriteAndShare.lwas.Exception.InvalidTokenException;
 import com.LetsWriteAndShare.lwas.Exception.NotFoundException;
 import com.LetsWriteAndShare.lwas.Exception.NotUniqueEmailException;
 import com.LetsWriteAndShare.lwas.Repository.UserRepository;
+import com.LetsWriteAndShare.lwas.configuration.CurrentUser;
 import com.LetsWriteAndShare.lwas.dto.UserUpdate;
 import com.LetsWriteAndShare.lwas.email.EmailService;
 import com.LetsWriteAndShare.lwas.entity.User;
@@ -69,13 +70,13 @@ public class UserService {
         }
     }
 
-    public Page<User> getUsers(Pageable page, User loggedInUser) {
+    public Page<User> getUsers(Pageable page, CurrentUser currentUser) {
 
-        if (loggedInUser ==null){
+        if (currentUser ==null){
             return  userRepository.findAll(page);
         }
 
-            return  userRepository.findByIdNot(loggedInUser.getId(),page);
+            return  userRepository.findByIdNot(currentUser.getId(),page);
     }
 
     public User getUser(long id) {
