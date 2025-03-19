@@ -1,6 +1,7 @@
 package com.LetsWriteAndShare.lwas.configuration;
 
 
+import com.LetsWriteAndShare.lwas.Exception.AuthEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,7 +25,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authentication)->authentication.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PUT,"/api/v1/users/{id}"))
                 .authenticated()
                 .anyRequest().permitAll());
-        http.httpBasic(Customizer.withDefaults());
+        //http.httpBasic(Customizer.withDefaults());
+        http.httpBasic(httpBasic-> httpBasic.authenticationEntryPoint(new AuthEntryPoint()));
         http.csrf(AbstractHttpConfigurer::disable); //  http.csrf(csrf->csrf.disable()); same
         http.headers(AbstractHttpConfigurer::disable); // http.headers(headers->headers.disable());
 
