@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -68,14 +69,12 @@ public class UserController {
     }
 
     @PutMapping("/api/v1/users/{id}")
-    UserDto updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate,
-                       @AuthenticationPrincipal CurrentUser currentUser){
+    @PreAuthorize("#id == principal.id")
+    UserDto updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate){
 
 
 
-    if(currentUser.getId() != id){
-        throw  new AuthenticationException();
-    }
+
     return  new UserDto(userService.updateUser(id,userUpdate)) ;
 }
 
