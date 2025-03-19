@@ -12,12 +12,16 @@ public class CurrentUser implements UserDetails {
     long id;
     String username;
     String password;
+    boolean enable;
+
+
 
 
     public CurrentUser(User user){
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.enable = user.isActive();
     }
 
     @Override
@@ -51,7 +55,7 @@ public class CurrentUser implements UserDetails {
         }
         @Override
         public boolean isEnabled() {
-            return true;
+            return enable;
         }
     public void setUsername(String usernane) {
         this.username = usernane;
