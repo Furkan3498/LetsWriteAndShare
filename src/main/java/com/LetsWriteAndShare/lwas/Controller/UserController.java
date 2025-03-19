@@ -69,6 +69,7 @@ public class UserController {
     }
 
     @PutMapping("/api/v1/users/{id}")
+    //@PreAuthorize("authentication.principal.id == #id")
     @PreAuthorize("#id == principal.id")
     UserDto updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate){
 
