@@ -95,6 +95,7 @@ public class UserService {
 
         User inDb = getUser(id);
         inDb.setUsername(userUpdate.username());
+        inDb.setImage(userUpdate.image());
         return userRepository.save(inDb);
 
         //Mapping işlemi yapılacak

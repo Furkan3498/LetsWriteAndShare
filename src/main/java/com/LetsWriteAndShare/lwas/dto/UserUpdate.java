@@ -5,5 +5,6 @@ import jakarta.validation.constraints.Size;
 
 public record UserUpdate(@NotBlank(message = "{LetsWriteAndShare.constraint.username.notblank}")
                          @Size(min = 4, max = 255, message = "{LetsWriteAndShare.constraint.username.size}")
-                         String username) {
+                         String username
+                            , String image) {
 }

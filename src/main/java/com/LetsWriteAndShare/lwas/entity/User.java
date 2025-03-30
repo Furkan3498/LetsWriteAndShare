@@ -30,6 +30,8 @@ public class User {
     boolean active = false;
     @JsonIgnore
     String activationToken;
+
+    @Lob //Large Object == over 255 character
     String image;
     //toString yapmadım daha
 
