@@ -17,7 +17,7 @@ public class FileService {
 
         try {
             OutputStream outputStream = new FileOutputStream(file);
-            byte[] base64Decoded = Base64.getDecoder().decode(image);
+            byte[] base64Decoded = Base64.getDecoder().decode(image.split(",")[1]);
             outputStream.write(base64Decoded);
             outputStream.close();
             return fileName;
