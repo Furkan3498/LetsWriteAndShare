@@ -9,8 +9,8 @@ import com.LetsWriteAndShare.lwas.configuration.CurrentUser;
 import com.LetsWriteAndShare.lwas.dto.UserUpdate;
 import com.LetsWriteAndShare.lwas.email.EmailService;
 import com.LetsWriteAndShare.lwas.entity.User;
+import com.LetsWriteAndShare.lwas.file.FileService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,15 +26,17 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final FileService fileService;
 
     //@Autowired
     //PasswordEncoder passwordEncoder;
 
     private  final  PasswordEncoder passwordEncoder ; // if we can private finel can we change again? bcs is a immutable
 
-    public UserService(UserRepository userRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, EmailService emailService, FileService fileService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.fileService = fileService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -95,7 +97,11 @@ public class UserService {
 
         User inDb = getUser(id);
         inDb.setUsername(userUpdate.username());
-        inDb.setImage(userUpdate.image());
+
+        if (userUpdate.image() != null) {
+
+            String fileName = fileService.saveBase64StringAsFile(userUpdate.image());
+            inDb.setImage(fileName);}
         return userRepository.save(inDb);
 
         //Mapping işlemi yapılacak
