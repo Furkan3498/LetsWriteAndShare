@@ -33,7 +33,13 @@ public class StaticResourceConfiguration implements WebMvcConfigurer {
 
 
 
-
+    @Bean
+    CommandLineRunner createStorageDirs(){
+        return args -> {
+            createFolder(Paths.get(lwasProperties.getStorage().getRoot()));
+            createFolder(Paths.get(lwasProperties.getStorage().getRoot(), lwasProperties.getStorage().getProfile()));
+        };
+    }
 
     private void createFolder(Path path){
         File file = path.toFile();
