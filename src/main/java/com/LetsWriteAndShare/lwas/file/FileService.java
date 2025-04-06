@@ -1,22 +1,30 @@
 package com.LetsWriteAndShare.lwas.file;
 
 
+import com.LetsWriteAndShare.lwas.configuration.LwasProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.UUID;
 
 @Service
 public class FileService {
+
+
+    @Autowired
+    LwasProperties lwasProperties;
     public String saveBase64StringAsFile(String image) {
 
         String fileName = UUID.randomUUID().toString();
 
-        File file =new File(fileName);
+        Path path = Paths.get(lwasProperties.getStorage().getRoot(), lwasProperties.getStorage().getProfile(), fileName);
 
         try {
-            OutputStream outputStream = new FileOutputStream(file);
+            OutputStream outputStream = new FileOutputStream(path.toFile());
             byte[] base64Decoded = Base64.getDecoder().decode(image.split(",")[1]);
             outputStream.write(base64Decoded);
             outputStream.close();
