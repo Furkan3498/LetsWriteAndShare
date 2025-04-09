@@ -17,19 +17,25 @@ public class AuthEntryPoint implements AuthenticationEntryPoint {
 
 
 
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver handlerExceptionResolver;
+   // @Qualifier("handlerExceptionResolver")
+    //  private HandlerExceptionResolver handlerExceptionResolver;
 
-    public AuthEntryPoint(HandlerExceptionResolver handlerExceptionResolver) {
-        this.handlerExceptionResolver = handlerExceptionResolver;
-    }
+    //  public AuthEntryPoint(HandlerExceptionResolver handlerExceptionResolver) {
+    //       this.handlerExceptionResolver = handlerExceptionResolver;
+    //    }
 
-    public AuthEntryPoint() {
+    //   public AuthEntryPoint() {
 
-    }
+    //   }
 
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        handlerExceptionResolver.resolveException(request,response,null,authException);
-    }
+    // @Override
+    //  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    //      handlerExceptionResolver.resolveException(request,response,null,authException);
+    //   }
+
+
+
+
+
+
 }

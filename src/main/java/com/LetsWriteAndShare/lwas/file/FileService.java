@@ -2,6 +2,7 @@ package com.LetsWriteAndShare.lwas.file;
 
 
 import com.LetsWriteAndShare.lwas.configuration.LwasProperties;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class FileService {
 
     @Autowired
     LwasProperties lwasProperties;
+
+
+    Tika  tika = new Tika();
     public String saveBase64StringAsFile(String image) {
 
         String fileName = UUID.randomUUID().toString();
@@ -35,7 +39,7 @@ public class FileService {
     }
 
     public String detectedType(String value) {
-        return null;
+        return tika.detect(decodedImage(value));
     }
 
 
