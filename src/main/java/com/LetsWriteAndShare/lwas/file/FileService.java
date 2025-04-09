@@ -25,13 +25,21 @@ public class FileService {
 
         try {
             OutputStream outputStream = new FileOutputStream(path.toFile());
-            byte[] base64Decoded = Base64.getDecoder().decode(image.split(",")[1]);
-            outputStream.write(base64Decoded);
+            outputStream.write(decodedImage(image));
             outputStream.close();
             return fileName;
         } catch (IOException e) {
            e.printStackTrace();;
         }
         return null;
+    }
+
+    public String detectedType(String value) {
+        return null;
+    }
+
+
+    private byte[] decodedImage(String encodedImage){
+        return  Base64.getDecoder().decode(encodedImage.split(",")[1]);
     }
 }
