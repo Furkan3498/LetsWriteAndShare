@@ -8,6 +8,6 @@ public record UserUpdate(@NotBlank(message = "{LetsWriteAndShare.constraint.user
                          @Size(min = 4, max = 255, message = "{LetsWriteAndShare.constraint.username.size}")
                          String username ,
 
-                         @FileType
+                         @FileType(types = {"jpeg" ,"png"})
                          String image) {
 }

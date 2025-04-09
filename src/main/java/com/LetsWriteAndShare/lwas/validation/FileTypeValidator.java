@@ -8,9 +8,15 @@ public class FileTypeValidator implements ConstraintValidator<FileType, String> 
 
 
     private final  FileService fileService;
+    String[] types;
 
     public FileTypeValidator(FileService fileService) {
         this.fileService = fileService;
+    }
+
+    @Override
+    public void initialize(FileType constraintAnnotation) {
+        this.types = constraintAnnotation.types();
     }
 
     @Override

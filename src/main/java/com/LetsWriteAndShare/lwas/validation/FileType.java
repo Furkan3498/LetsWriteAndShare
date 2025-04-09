@@ -20,4 +20,6 @@ public @interface  FileType {
     Class<?>[] groups() default { };
 
     Class<? extends Payload>[] payload() default { };
+
+    String[] types();
 }
