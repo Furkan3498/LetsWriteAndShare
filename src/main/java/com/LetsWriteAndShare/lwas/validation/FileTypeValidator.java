@@ -33,7 +33,11 @@ public class FileTypeValidator implements ConstraintValidator<FileType, String> 
             if (type.contains(validType)) return true;
         }
 
-
+        String validTypes = Arrays.stream(types).collect(Collectors.joining(","));
+        context.disableDefaultConstraintViolation();
+        HibernateConstraintValidatorContext hibernateConstraintValidatorContext = context.unwrap(HibernateConstraintValidatorContext.class);
+        hibernateConstraintValidatorContext.addMessageParameter("types",validTypes);
+        hibernateConstraintValidatorContext.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).addConstraintViolation();
         return false;
 
     }
