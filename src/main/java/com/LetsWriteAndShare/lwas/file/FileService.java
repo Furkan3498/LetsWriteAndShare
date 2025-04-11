@@ -46,4 +46,11 @@ public class FileService {
     private byte[] decodedImage(String encodedImage){
         return  Base64.getDecoder().decode(encodedImage.split(",")[1]);
     }
+
+    public void deleteProfilImage(String image) {
+    }
+
+    private Path getProfileImagePath(String fileName){
+        return Paths.get(lwasProperties.getStorage().getRoot(), lwasProperties.getStorage().getProfile(), fileName);
+    }
 }
