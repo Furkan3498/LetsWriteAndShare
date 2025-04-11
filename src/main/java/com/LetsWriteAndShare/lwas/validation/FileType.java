@@ -15,7 +15,7 @@ public @interface  FileType {
 
 
 
-    String message() default "Only JPEG and PNG files are allowed";
+    String message() default "Only {types} are allowed";
 
     Class<?>[] groups() default { };
 

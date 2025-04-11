@@ -3,6 +3,10 @@ package com.LetsWriteAndShare.lwas.validation;
 import com.LetsWriteAndShare.lwas.file.FileService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class FileTypeValidator implements ConstraintValidator<FileType, String> {
 
@@ -25,8 +29,10 @@ public class FileTypeValidator implements ConstraintValidator<FileType, String> 
         if (value ==null || value.isEmpty())return  true;
 
         String type = fileService.detectedType(value);
+        for (String validType : types){
+            if (type.contains(validType)) return true;
+        }
 
-        if (type.equals("image:/jpeg") || type.equals("image/png")) return true;
 
         return false;
 
