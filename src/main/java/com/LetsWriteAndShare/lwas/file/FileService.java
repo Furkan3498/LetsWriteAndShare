@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
@@ -25,7 +26,7 @@ public class FileService {
 
         String fileName = UUID.randomUUID().toString();
 
-        Path path = Paths.get(lwasProperties.getStorage().getRoot(), lwasProperties.getStorage().getProfile(), fileName);
+        Path path = getProfileImagePath(fileName);
 
         try {
             OutputStream outputStream = new FileOutputStream(path.toFile());
@@ -48,6 +49,13 @@ public class FileService {
     }
 
     public void deleteProfilImage(String image) {
+        if (image==null)return;;
+        Path path = getProfileImagePath(image);
+        try {
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Path getProfileImagePath(String fileName){
