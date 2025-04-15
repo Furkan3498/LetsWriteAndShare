@@ -6,6 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -33,6 +34,9 @@ public class TokenFilter extends OncePerRequestFilter {
           User user = tokenService.verifyToken(authorizationHeader);
 
           if (user != null){
+              if (!user.isActive()){
+                  throw  new DisabledException("User is disable");
+              }
               CurrentUser currentUser = new CurrentUser(user);
               UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(currentUser,
                       null,currentUser.getAuthorities());
