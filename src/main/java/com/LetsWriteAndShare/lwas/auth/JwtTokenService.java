@@ -29,7 +29,7 @@ public class JwtTokenService implements TokenService {
 
         try {
             if (authorizationHeader == null) return  null;
-            String token = authorizationHeader.split("Bearer ")[1];
+            String token = authorizationHeader.split(" ")[1];
             JwtParser parser = Jwts.parserBuilder().setSigningKey(key).build();
             Jws<Claims> claims =parser.parseClaimsJws(token);
             Long userId = Long.valueOf(claims.getBody().getSubject());
