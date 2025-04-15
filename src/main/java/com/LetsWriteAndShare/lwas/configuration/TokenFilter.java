@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 
 @Component
@@ -43,6 +44,13 @@ public class TokenFilter extends OncePerRequestFilter {
                   apiErrors.setPath(request.getRequestURI());
                   apiErrors.setMessage("User is disable");
                   ObjectMapper  objectMapper = new ObjectMapper();
+
+                  response.setStatus(401);
+                  response.setContentType("application/json");
+                  OutputStream outputStream = response.getOutputStream();
+                  objectMapper.writeValue(outputStream,apiErrors);
+                  outputStream.flush();
+                  return;
               }
               CurrentUser currentUser = new CurrentUser(user);
               UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(currentUser,
