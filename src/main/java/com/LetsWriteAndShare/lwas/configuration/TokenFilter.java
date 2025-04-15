@@ -1,7 +1,9 @@
 package com.LetsWriteAndShare.lwas.configuration;
 
 import com.LetsWriteAndShare.lwas.entity.User;
+import com.LetsWriteAndShare.lwas.errors.ApiErrors;
 import com.LetsWriteAndShare.lwas.service.TokenService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +37,12 @@ public class TokenFilter extends OncePerRequestFilter {
 
           if (user != null){
               if (!user.isActive()){
-                  throw  new DisabledException("User is disable");
+               //   throw  new DisabledException("User is disable");
+                  ApiErrors apiErrors = new ApiErrors();
+                  apiErrors.setStatus(401);
+                  apiErrors.setPath(request.getRequestURI());
+                  apiErrors.setMessage("User is disable");
+                  ObjectMapper  objectMapper = new ObjectMapper();
               }
               CurrentUser currentUser = new CurrentUser(user);
               UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(currentUser,
