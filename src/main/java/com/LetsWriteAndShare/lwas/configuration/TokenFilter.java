@@ -45,19 +45,21 @@ public class TokenFilter extends OncePerRequestFilter {
 
           if (user != null){
               if (!user.isActive()){
-               //   throw  new DisabledException("User is disable");
-                 ApiErrors apiErrors = new ApiErrors();
-                     apiErrors.setStatus(401);
-                   apiErrors.setPath(request.getRequestURI());
-                     apiErrors.setMessage("User is disable");
-                     ObjectMapper  objectMapper = new ObjectMapper();
-
-                     response.setStatus(401);
-                     response.setContentType("application/json");
-                  OutputStream outputStream = response.getOutputStream();
-                  objectMapper.writeValue(outputStream,apiErrors);
-                  outputStream.flush();
+                  exceptionResolver.resolveException(request,response,null,new DisabledException("User is disable"));
                   return;
+               //   throw  new DisabledException("User is disable");
+                  //    ApiErrors apiErrors = new ApiErrors();
+                  //       apiErrors.setStatus(401);
+                  //      apiErrors.setPath(request.getRequestURI());
+                  //        apiErrors.setMessage("User is disable");
+                  //       ObjectMapper  objectMapper = new ObjectMapper();
+
+                  //       response.setStatus(401);
+                  //        response.setContentType("application/json");
+                  //      OutputStream outputStream = response.getOutputStream();
+                  //       objectMapper.writeValue(outputStream,apiErrors);
+                  //       outputStream.flush();
+                  //       return;
               }
               CurrentUser currentUser = new CurrentUser(user);
               UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(currentUser,
