@@ -8,12 +8,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,6 +31,10 @@ public class TokenFilter extends OncePerRequestFilter {
         this.tokenService = tokenService;
     }
 
+
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver exceptionResolver;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -39,14 +46,14 @@ public class TokenFilter extends OncePerRequestFilter {
           if (user != null){
               if (!user.isActive()){
                //   throw  new DisabledException("User is disable");
-                  ApiErrors apiErrors = new ApiErrors();
-                  apiErrors.setStatus(401);
-                  apiErrors.setPath(request.getRequestURI());
-                  apiErrors.setMessage("User is disable");
-                  ObjectMapper  objectMapper = new ObjectMapper();
+                 ApiErrors apiErrors = new ApiErrors();
+                     apiErrors.setStatus(401);
+                   apiErrors.setPath(request.getRequestURI());
+                     apiErrors.setMessage("User is disable");
+                     ObjectMapper  objectMapper = new ObjectMapper();
 
-                  response.setStatus(401);
-                  response.setContentType("application/json");
+                     response.setStatus(401);
+                     response.setContentType("application/json");
                   OutputStream outputStream = response.getOutputStream();
                   objectMapper.writeValue(outputStream,apiErrors);
                   outputStream.flush();
