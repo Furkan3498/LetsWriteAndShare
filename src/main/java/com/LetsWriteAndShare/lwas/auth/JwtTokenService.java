@@ -3,6 +3,8 @@ package com.LetsWriteAndShare.lwas.auth;
 import com.LetsWriteAndShare.lwas.dto.Credentials;
 import com.LetsWriteAndShare.lwas.entity.User;
 import com.LetsWriteAndShare.lwas.service.TokenService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.context.annotation.Primary;
@@ -17,10 +19,19 @@ public class JwtTokenService implements TokenService {
 
 
     SecretKey key = Keys.hmacShaKeyFor("secret-must-be-at-least-32-chars".getBytes());
+
+    ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public Token createToken(User user, Credentials credentials) {
-        String token = Jwts.builder().setSubject(Long.toString(user.getId())).signWith(key).compact();
-        return new Token("Bearer",token);
+        TokenSubject tokenSubject = new TokenSubject(user.getId(), user.isActive());
+        try {
+            String subject = objectMapper.writeValueAsString(tokenSubject);
+            String token = Jwts.builder().setSubject(subject).signWith(key).compact();
+            return new Token("Bearer",token);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
 
     }
 
@@ -40,5 +51,10 @@ public class JwtTokenService implements TokenService {
             e.printStackTrace();
         }
         return  null;
+    }
+
+
+    public static record TokenSubject(long id, boolean active){
+
     }
 }
