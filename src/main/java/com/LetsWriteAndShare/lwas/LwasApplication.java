@@ -30,6 +30,7 @@ public class LwasApplication {
                     user.setUsername("userdeneme" + i);
                     user.setEmail("usermail" + i + "@gmail.com");
                     user.setPassword(passwordEncoder.encode("P4ssword"));
+                     //user.setActive(i !=1); we can use it diactive user test
                     user.setActive(true);
                     userRepository.save(user);
                 }

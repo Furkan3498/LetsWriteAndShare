@@ -37,17 +37,23 @@ public class JwtTokenService implements TokenService {
 
     @Override
     public User verifyToken(String authorizationHeader) {
+        if (authorizationHeader == null) return  null;
 
+        var token = authorizationHeader.split(" ")[1];
+        JwtParser parser = Jwts.parserBuilder().setSigningKey(key).build();
         try {
-            if (authorizationHeader == null) return  null;
-            String token = authorizationHeader.split(" ")[1];
-            JwtParser parser = Jwts.parserBuilder().setSigningKey(key).build();
+
+
+
             Jws<Claims> claims =parser.parseClaimsJws(token);
-            Long userId = Long.valueOf(claims.getBody().getSubject());
+            String subject = claims.getBody().getSubject();
+            var tokenSubject =objectMapper.readValue(subject,TokenSubject.class);
+
             User user = new User();
-            user.setId(userId);
+            user.setId(tokenSubject.id);
+            user.setActive(tokenSubject.active);
             return user;
-        }catch (JwtException e){
+        }catch (JwtException | JsonProcessingException e){
             e.printStackTrace();
         }
         return  null;
