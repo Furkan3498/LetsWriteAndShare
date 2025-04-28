@@ -12,6 +12,7 @@ import java.util.Base64;
 
 @Service
 @ConditionalOnProperty(name = "lwas.token-type" , havingValue = "basic")
+//@ConditionalOnProperty(name = "lwas.token-type" , havingValue = "jwt")
 public class BasicAuthTokenService implements TokenService{
 
     private final UserService userService;
