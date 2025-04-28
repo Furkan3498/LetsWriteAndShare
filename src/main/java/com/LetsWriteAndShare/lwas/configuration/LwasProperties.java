@@ -18,6 +18,8 @@ public class LwasProperties {
 
     private String tokenType;
 
+
+
     public String getTokenType() {
         return tokenType;
     }
