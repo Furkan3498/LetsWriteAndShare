@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Base64;
 
 @Service
-@ConditionalOnProperty(name = "lwas.token-type")
+@ConditionalOnProperty(name = "lwas.token-type" , havingValue = "basic")
 public class BasicAuthTokenService implements TokenService{
 
     private final UserService userService;
