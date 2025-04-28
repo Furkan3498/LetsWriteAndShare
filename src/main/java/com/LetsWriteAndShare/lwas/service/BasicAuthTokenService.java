@@ -3,12 +3,15 @@ package com.LetsWriteAndShare.lwas.service;
 import com.LetsWriteAndShare.lwas.auth.Token;
 import com.LetsWriteAndShare.lwas.dto.Credentials;
 import com.LetsWriteAndShare.lwas.entity.User;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 
 @Service
+@ConditionalOnProperty(name = "lwas.token-type")
 public class BasicAuthTokenService implements TokenService{
 
     private final UserService userService;
