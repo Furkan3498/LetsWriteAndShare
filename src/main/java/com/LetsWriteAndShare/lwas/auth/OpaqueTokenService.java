@@ -7,6 +7,7 @@ import com.LetsWriteAndShare.lwas.service.TokenService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -31,6 +32,13 @@ public class OpaqueTokenService implements TokenService {
 
     @Override
     public User verifyToken(String authorizationHeader) {
-        return null;
+        if (authorizationHeader == null) return  null;
+
+        var token = authorizationHeader.split(" ")[1];
+
+
+         var tokenInDb = tokenRepository.findById(token);
+         if (!tokenInDb.isPresent()) return null;
+         return tokenInDb.get().getUser();
     }
 }

@@ -35,13 +35,6 @@ public class LwasApplication {
                     userRepository.save(user);
                 }
 
-                  User user = new User();
-                  user.setUsername("userdeneme26");
-                  user.setEmail("usermail26@gmail.com");
-                  user.setPassword(passwordEncoder.encode("P4ssword"));
-                  user.setActive(false);
-                  userRepository.save(user);
-
             };
         };
 
