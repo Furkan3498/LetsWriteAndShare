@@ -19,7 +19,7 @@ public class Token{
     String prefix = "Bearer";
 
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne //one user has a lot of token
     User user;
 
