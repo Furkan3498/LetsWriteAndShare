@@ -25,6 +25,7 @@ public class OpaqueTokenService implements TokenService {
        String randomValue = UUID.randomUUID().toString();
        Token token = new Token();
        token.setToken(randomValue);
+       token.setUser(user);
        return tokenRepository.save(token);
     }
 

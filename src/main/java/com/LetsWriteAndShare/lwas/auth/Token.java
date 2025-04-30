@@ -1,6 +1,7 @@
 package com.LetsWriteAndShare.lwas.auth;
 
 import com.LetsWriteAndShare.lwas.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -18,6 +19,7 @@ public class Token{
     String prefix = "Bearer";
 
 
+    @JsonIgnore
     @ManyToOne //one user has a lot of token
     User user;
 
