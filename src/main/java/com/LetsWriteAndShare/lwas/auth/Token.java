@@ -17,7 +17,6 @@ public class Token{
 
     @Transient // we dont need read database "bearer". It necesarry only client
 
-
     String prefix = "Bearer";
 
 
